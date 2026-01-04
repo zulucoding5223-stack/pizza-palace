@@ -4,6 +4,7 @@ import logo from "../assets/Pizza-Slice-in-Tango-Colors.svg";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(true);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(true);
   return (
     <div>
       <section className="px-10 py-5 shadow flex items-center justify-between sticky">
@@ -13,7 +14,7 @@ const Navbar = () => {
             <p>Pizza Palace</p>
           </div>
         </div>
-        <div className="text-[0.85rem] hidden md:block">
+        <div className="text-[0.85rem] hidden lg:block">
           <ul className="flex items-center gap-5">
             <li>Home</li>
             <li>Abouts</li>
@@ -22,38 +23,36 @@ const Navbar = () => {
           </ul>
         </div>
         <div>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
             {user ? (
               <>
-                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 hidden md:block">
-                  Login
+                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950">
+                  Cart
                 </button>
-                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 md:hidden">
+                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 hidden lg:block">
                   Profile
                 </button>
-                <button
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 md:hidden"
-                >
-                  X
+                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 lg:hidden">
+                  Profile
                 </button>
+
                 <p className="text-[0.85rem] w-fit text-orange-600 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden md:block">
                   {user ? "Welcome user Bongokuhle!" : "Join us now!"}
                 </p>
+                <button
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 lg:hidden"
+                >
+                  X
+                </button>
               </>
             ) : (
               <>
-                <p className="text-[0.85rem] w-fit text-orange-600 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden md:block">
+                <p className="text-[0.85rem] w-fit text-orange-600 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden lg:block">
                   {user ? "Welcome user Bongokuhle!" : "Join us now!"}
                 </p>
-                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 hidden md:block">
+                <button className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 hidden lg:block">
                   Login
-                </button>
-                <button
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  className="rounded-lg pt-1 pb-1.5 px-3 text-center bg-orange-600 text-blue-950 md:hidden"
-                >
-                  X
                 </button>
               </>
             )}
@@ -61,7 +60,7 @@ const Navbar = () => {
         </div>
 
         <ul
-          className={`absolute top-20 right-0 bg-white z-20 w-screen flex items-start flex-col gap-1 md:hidden ${
+          className={`absolute top-20 right-0 bg-white z-20 w-screen flex items-start flex-col gap-1 lg:hidden ${
             isOpen ? "block" : "hidden"
           }`}
         >
@@ -81,6 +80,10 @@ const Navbar = () => {
             Login
           </li>
         </ul>
+
+        {/*<ul>
+            <li></li>
+        </ul>*/}
       </section>
     </div>
   );

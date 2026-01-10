@@ -11,7 +11,7 @@ const Navbar = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(0);
 
-  const navLinks = ["Home", "About", "Location", "Communications"];
+  const navLinks = ["Home", "Menu", "Location", "Communications"];
   return (
     <div>
       <section className="px-10 py-5 shadow flex items-center justify-between fixed bg-white z-1 w-full">
@@ -106,7 +106,7 @@ const Navbar = () => {
         </div>
 
         <ul
-          className={`absolute top-20 right-0 bg-white z-20 w-screen flex items-start flex-col gap-1 lg:hidden text-[0.85rem] ${
+          className={`absolute top-20 right-0 bg-white z-5 w-screen flex items-start flex-col gap-1 lg:hidden text-[0.85rem] ${
             isOpen ? "block" : "hidden"
           }`}
         >
@@ -114,7 +114,7 @@ const Navbar = () => {
             Home
           </li>
           <li className="text-start pt-1 pb-1.5 w-full hover:bg-blue-950 hover:text-red-500 px-10 transition-all duration-300">
-            Abouts
+            Menu
           </li>
           <li className="text-start pt-1 pb-1.5 w-full hover:bg-blue-950 hover:text-red-500 px-10 transition-all duration-300">
             Communications
@@ -133,7 +133,7 @@ const Navbar = () => {
         </ul>
 
         {user && isProfileMenuOpen && (
-          <ul className="absolute lg:top-15.5 top-16 lg:right-10 right-5 text-[0.85rem] z-5 w-fit bg-gray-50">
+          <ul className="absolute lg:top-15.5 top-16 lg:right-4.5 md:right-21 right-5 text-[0.85rem] z-5 w-fit bg-gray-50">
             <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
               My Cart
             </li>
@@ -149,7 +149,7 @@ const Navbar = () => {
                 setUser(false);
                 setIsProfileMenuOpen(false);
               }}
-              className="text-center pt-1 pb-1.5 px-20 w-full bg-blue-950 text-red-500 hover:bg-orange-600 hover:text-blue-950 transition-all duration-300 hover:cursor-pointer"
+              className="text-center pt-1 pb-1.5 px-20 w-full text-blue-950 bg-red-500 hover:text-white hover:bg-gray-700 transition-all duration-300 hover:cursor-pointer"
             >
               Logout
             </li>

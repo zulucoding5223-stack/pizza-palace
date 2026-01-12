@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/Pizza-Slice-in-Tango-Colors.svg";
 import { TiShoppingCart } from "react-icons/ti";
 import { IoPerson } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [isClicked, setIsClicked] = useState(0);
+  const [isClicked, setIsClicked] = useState("home");
+  const location = useLocation();
+  const page =
+    location.pathname.slice(1) === "" ? "/" : location.pathname.slice(1);
+
+  useEffect(() => {
+    setIsClicked(page);
+  }, [location]);
 
   const navLinks = ["Home", "Menu", "Location", "Communications"];
+  const navigate = useNavigate();
   return (
     <div>
       <section className="px-10 py-5 shadow flex items-center justify-between fixed bg-white z-1 w-full">
@@ -27,21 +35,34 @@ const Navbar = () => {
         <div className="text-[0.85rem] hidden lg:block">
           <ul className="flex items-center gap-5">
             {navLinks.map((navLink, index) => {
+              const path =
+                navLink.toLocaleLowerCase() === "home"
+                  ? "/"
+                  : `/${navLink.toLocaleLowerCase()}`;
               return (
-                <li
+                <Link
+                  to={`${path}`}
                   key={index}
-                  className="flex items-center flex-col gap-0.5 text-red-500 group hover:cursor-pointer"
+                  className={`flex items-center flex-col gap-0.5 text-red-500 group hover:cursor-pointer ${
+                    isClicked ===
+                    (path === "/" ? "/" : `${navLink.toLocaleLowerCase()}`)
+                      ? "hover:text-red-500"
+                      : "hover:text-blue-950"
+                  }`}
                   onClick={() => {
-                    setIsClicked(index);
+                    setIsClicked(path);
                   }}
                 >
                   <span>{navLink}</span>
                   <span
                     className={`h-0.5 rounded w-0 bg-blue-400  group transition-all duration-500 ease-in-out ${
-                      isClicked === index ? "w-full" : ""
+                      isClicked ===
+                      (path === "/" ? "/" : `${navLink.toLocaleLowerCase()}`)
+                        ? "w-full"
+                        : ""
                     }`}
                   ></span>
-                </li>
+                </Link>
               );
             })}
           </ul>
@@ -70,7 +91,7 @@ const Navbar = () => {
 
                 <p
                   onClick={() => {
-                    user && setIsProfileMenuOpen((prev) => !prev);
+                    user ? setIsProfileMenuOpen((prev) => !prev) : navigate('/register');
                   }}
                   className="hover:cursor-pointer text-[0.85rem] w-fit text-red-500 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden md:block"
                 >
@@ -89,7 +110,7 @@ const Navbar = () => {
                   {user ? "Welcome user Bongokuhle!" : "Join us now!"}
                 </p>
                 <button
-                  onClick={() => setUser(true)}
+                  onClick={() => navigate('/login')}
                   className="hover:cursor-pointer rounded-lg pt-1 pb-1.5 px-3 text-center bg-red-500 text-blue-950 hidden lg:block"
                 >
                   Login
@@ -110,21 +131,36 @@ const Navbar = () => {
             isOpen ? "block" : "hidden"
           }`}
         >
-          <li className="text-start pt-1 pb-1.5 w-full hover:bg-blue-950 hover:text-red-500 px-10 transition-all duration-300">
-            Home
-          </li>
-          <li className="text-start pt-1 pb-1.5 w-full hover:bg-blue-950 hover:text-red-500 px-10 transition-all duration-300">
-            Menu
-          </li>
-          <li className="text-start pt-1 pb-1.5 w-full hover:bg-blue-950 hover:text-red-500 px-10 transition-all duration-300">
-            Communications
-          </li>
-          <li className="text-start pt-1 pb-1.5 w-full hover:bg-blue-950 hover:text-red-500 px-10 transition-all duration-300">
-            Locations
-          </li>
+          {navLinks.map((navLink, index) => {
+            const path =
+              navLink.toLocaleLowerCase() === "home"
+                ? "/"
+                : `/${navLink.toLocaleLowerCase()}`;
+            return (
+              <Link
+                key={index}
+                onClick={() => {
+                  setIsClicked(path);
+                  setIsOpen(false);
+                }}
+                to={`${path}`}
+                className={`text-start pt-1 pb-1.5 w-full  px-10 transition-all duration-300
+                  ${
+                    isClicked ===
+                    (path === "/" ? "/" : `${navLink.toLocaleLowerCase()}`)
+                      ? "bg-orange-500 text-blue-950 hover:bg-orange-500 hover:text-blue-950"
+                      : "hover:bg-blue-950 hover:text-red-500"
+                  }`}
+              >
+                {navLink}
+              </Link>
+            );
+          })}
           <li
             onClick={() => {
               user ? setUser(false) : setUser(true);
+              setIsOpen(false);
+              user ? navigate("/") : navigate('/login')
             }}
             className="text-center pt-1 pb-1.5 w-full hover:bg-red-500 hover:text-blue-950 border border-b-blue-950 border-t-blue-950 text-red-500"
           >
@@ -148,6 +184,7 @@ const Navbar = () => {
                 setIsOpen(false);
                 setUser(false);
                 setIsProfileMenuOpen(false);
+                navigate("/");
               }}
               className="text-center pt-1 pb-1.5 px-20 w-full text-blue-950 bg-red-500 hover:text-white hover:bg-gray-700 transition-all duration-300 hover:cursor-pointer"
             >

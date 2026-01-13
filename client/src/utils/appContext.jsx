@@ -21,6 +21,7 @@ const dummyUsers = [
 
 export const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const login = (email, password) => {
     const foundUser = dummyUsers.find(
@@ -38,7 +39,7 @@ export const AppContextProvider = ({ children }) => {
   const logout = () => setUser(null);
 
   return (
-    <AppContext.Provider value={{ user, login, logout }}>
+    <AppContext.Provider value={{ user, login, logout, isOpen, setIsOpen }}>
       {children}
     </AppContext.Provider>
   );

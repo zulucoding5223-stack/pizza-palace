@@ -1,7 +1,10 @@
 import React from "react";
+import AdminHeader from "../components/admin-components/AdminHeader";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (<div>
+    <AdminHeader/>
+  </div>);
 };
 
 export default Dashboard;

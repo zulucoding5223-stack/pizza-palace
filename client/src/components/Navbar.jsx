@@ -4,10 +4,10 @@ import { TiShoppingCart } from "react-icons/ti";
 import { IoPerson } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAppContext } from "../utils/appContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isClicked, setIsClicked] = useState("home");
   const location = useLocation();
@@ -17,6 +17,8 @@ const Navbar = () => {
   useEffect(() => {
     setIsClicked(page);
   }, [location]);
+
+  const { logout, user } = useAppContext();
 
   const navLinks = ["Home", "Menu", "Location", "Communications"];
   const navigate = useNavigate();
@@ -89,14 +91,16 @@ const Navbar = () => {
                   />
                 </button>
 
-                <p
-                  onClick={() => {
-                    user ? setIsProfileMenuOpen((prev) => !prev) : navigate('/register');
-                  }}
-                  className="hover:cursor-pointer text-[0.85rem] w-fit text-red-500 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden md:block"
-                >
-                  {user ? "Welcome user Bongokuhle!" : "Join us now!"}
-                </p>
+                {user && (
+                  <p
+                    onClick={() => {
+                      setIsProfileMenuOpen((prev) => !prev);
+                    }}
+                    className="hover:cursor-pointer text-[0.85rem] w-fit text-red-500 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden md:block"
+                  >
+                    Welcome user {user.name}!
+                  </p>
+                )}
                 <button
                   onClick={() => setIsOpen((prev) => !prev)}
                   className="hover:cursor-pointer rounded-lg pt-1 pb-1.5 px-3 text-center text-blue-950 lg:hidden"
@@ -106,11 +110,8 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <p className="hover:cursor-pointer text-[0.85rem] w-fit text-red-500 px-2 pt-1 pb-1.5 text-center rounded-lg border border-blue-950 hidden md:block">
-                  {user ? "Welcome user Bongokuhle!" : "Join us now!"}
-                </p>
                 <button
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate("/login")}
                   className="hover:cursor-pointer rounded-lg pt-1 pb-1.5 px-3 text-center bg-red-500 text-blue-950 hidden lg:block"
                 >
                   Login
@@ -158,9 +159,9 @@ const Navbar = () => {
           })}
           <li
             onClick={() => {
-              user ? setUser(false) : setUser(true);
+              user && logout();
               setIsOpen(false);
-              user ? navigate("/") : navigate('/login')
+              user ? navigate("/") : navigate("/login");
             }}
             className="text-center pt-1 pb-1.5 w-full hover:bg-red-500 hover:text-blue-950 border border-b-blue-950 border-t-blue-950 text-red-500"
           >
@@ -181,8 +182,8 @@ const Navbar = () => {
             </li>
             <li
               onClick={() => {
+                logout();
                 setIsOpen(false);
-                setUser(false);
                 setIsProfileMenuOpen(false);
                 navigate("/");
               }}

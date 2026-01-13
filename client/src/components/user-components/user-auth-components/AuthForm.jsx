@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { FaUnlockAlt } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
+import { useAppContext } from "../../../utils/appContext";
 
 const AuthForm = () => {
   const location = useLocation();
@@ -12,9 +13,23 @@ const AuthForm = () => {
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAppContext();
   const handleSubmitForm = (e) => {
     e.preventDefault();
+
+    const result = login(email, password);
+
+    if (!result.success) {
+    alert(result.message);
+    return;
   }
+
+  if (result.user.role === "admin") {
+    navigate("/admin/dashboard");
+  } else {
+    navigate("/menu");
+  }
+  };
   return (
     <div className="flex justify-center">
       <form

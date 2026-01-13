@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Menu from "../components/menuPage-components/Menu";
+import Menu from "../components/user-components/menuPage-components/Menu";
 import { IoSearchOutline } from "react-icons/io5";
 import single from "../assets/pictures-of-pizza-23-1.jpg";
 import double from "../assets/OIP.webp";
@@ -111,7 +111,9 @@ const Menupage = () => {
       : setMenu(pizzaMenu);
   };
 
-  useEffect(()=>{setMenu(pizzaMenu)}, [])
+  useEffect(() => {
+    setMenu(pizzaMenu);
+  }, []);
 
   return (
     <div className="pt-24 px-10">

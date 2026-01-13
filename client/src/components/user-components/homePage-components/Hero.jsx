@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../assets/Pizza-Slice-in-Tango-Colors.svg";
+import logo from "../../../assets/Pizza-Slice-in-Tango-Colors.svg";
 
 const Hero = () => {
   const [user, setUser] = useState(true);

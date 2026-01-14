@@ -42,7 +42,7 @@ const ProductsList = ({ products, setProducts }) => {
                   {product.flavour}
                 </p>
               </div>
-              <div className="flex items-center flex-col gap-2">
+              <div className="flex items-start flex-col gap-2">
                 {product.sizes.map((size, index) => {
                   return (
                     <div

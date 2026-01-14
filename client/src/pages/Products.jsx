@@ -11,26 +11,32 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-  let filtered = pizzaMenu;
+    let filtered = pizzaMenu;
 
-  if (searchInput.trim() !== "") {
-    const search = searchInput.toLowerCase();
+    if (searchInput.trim() !== "") {
+      const search = searchInput.toLowerCase();
 
-    filtered = filtered.filter((pizza) =>
-      pizza?.name?.toLowerCase().includes(search) ||
-      pizza?.flavour?.toLowerCase().includes(search) ||
-      pizza?.category?.toLowerCase().includes(search)
-    );
-  }
+      filtered = filtered.filter(
+        (pizza) =>
+          pizza?.name?.toLowerCase().includes(search) ||
+          pizza?.flavour?.toLowerCase().includes(search) ||
+          pizza?.category?.toLowerCase().includes(search)
+      );
+    }
 
-  if (filter !== "") {
-    filtered = filtered.filter(
-      (pizza) => pizza?.category?.toLowerCase() === filter.toLowerCase()
-    );
-  }
+    if (filter !== "") {
+      filtered = filtered.filter(
+        (pizza) => pizza?.category?.toLowerCase() === filter.toLowerCase()
+      );
+    }
 
-  setProducts(filtered);
-}, [searchInput, filter, pizzaMenu]);
+    if (filtered.length === 0) {
+      alert("Matching pizza not found!");
+      setProducts(filtered);
+    }
+
+    setProducts(filtered);
+  }, [searchInput, filter, pizzaMenu]);
 
   return (
     <div>
@@ -50,19 +56,28 @@ const Products = () => {
           </div>
           <div className="px-auto flex items-center gap-2">
             <select
-              className="text-[0.85rem] bg-gray-200 outline-none px-3 rounded-sm text-start pb-1 pt-0.5"
+              className="text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem]  bg-gray-200 outline-none px-3 rounded-sm text-start pb-1 pt-0.5"
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value);
               }}
             >
-              <option className="text-[0.85rem] text-start" value="">
+              <option
+                className="text-[0.72rem] md:text-[0.81rem] lg:text-[0.85rem] text-start"
+                value=""
+              >
                 Filter
               </option>
-              <option className="text-[0.85rem] text-start" value="single">
+              <option
+                className="text-[0.72rem] md:text-[0.81rem] lg:text-[0.85rem] text-start"
+                value="single"
+              >
                 Single
               </option>
-              <option className="text-[0.85rem] text-start" value="double">
+              <option
+                className="text-[0.72rem] md:text-[0.81rem] lg:text-[0.85rem] text-start"
+                value="double"
+              >
                 Double Decker
               </option>
             </select>
@@ -72,11 +87,11 @@ const Products = () => {
                 setSearchInput("");
                 setProducts(pizzaMenu);
               }}
-              className="bg-red-600 text-center rounded-md px-3 text-[0.85rem] pt-0.5 pb-1 w-fit text-white"
+              className="bg-red-600 text-center rounded-md px-3 text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white"
             >
               Clear Filter
             </button>
-            <button className="bg-green-600 text-center rounded-md px-3 text-[0.85rem] pt-0.5 pb-1 w-fit text-white">
+            <button className="bg-green-600 text-center rounded-md px-3 text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white">
               Add New Product
             </button>
           </div>

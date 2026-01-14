@@ -3,19 +3,29 @@ import { RiAdminFill } from "react-icons/ri";
 import { MdDashboard } from "react-icons/md";
 import { BsBorderStyle } from "react-icons/bs";
 import { MdFoodBank } from "react-icons/md";
+import { RiLogoutBoxFill } from "react-icons/ri";
 import { useAppContext } from "../../utils/appContext";
 import profile from "../../assets/pictures-of-pizza-23-1.jpg";
 import { IoMenu } from "react-icons/io5";
-import { NavLink} from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const AdminNavbar = () => {
   const adminLinks = [
     { name: "Dashboard", icon: MdDashboard },
     { name: "Orders", icon: BsBorderStyle },
     { name: "Products", icon: MdFoodBank },
+    { name: "Logout", icon: RiLogoutBoxFill },
   ];
 
-  const { user, isOpen, setIsOpen } = useAppContext();
+  const { user, isOpen, setIsOpen, logout } = useAppContext();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      logout();
+    }
+  }, [location.pathname]);
 
   return (
     <div>
@@ -42,9 +52,13 @@ const AdminNavbar = () => {
               <hr className="w-full text-gray-700 my-8" />
               <ul className="flex items-center flex-col gap-3">
                 {adminLinks.map((adminLink, index) => {
+                  const path =
+                    adminLink.name.toLocaleLowerCase() === "logout"
+                      ? "/"
+                      : `/admin/${adminLink.name.toLocaleLowerCase()}`;
                   return (
                     <NavLink
-                      to={`/admin/${adminLink.name.toLocaleLowerCase()}`}
+                      to={path}
                       key={index}
                       className={({ isActive }) =>
                         `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer  ${
@@ -96,9 +110,14 @@ const AdminNavbar = () => {
               <hr className="w-full text-gray-700 my-8" />
               <ul className="flex items-center flex-col gap-3">
                 {adminLinks.map((adminLink, index) => {
+                  const path =
+                    adminLink.name.toLocaleLowerCase() === "logout"
+                      ? "/"
+                      : `/admin/${adminLink.name.toLocaleLowerCase()}`;
+
                   return (
                     <NavLink
-                      to={`/admin/${adminLink.name.toLocaleLowerCase()}`}
+                      to={path}
                       key={index}
                       className={({ isActive }) =>
                         `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer  ${

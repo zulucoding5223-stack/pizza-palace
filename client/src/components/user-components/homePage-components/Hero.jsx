@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import logo from "../../../assets/Pizza-Slice-in-Tango-Colors.svg";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(true);
   return (
     <div>
@@ -21,11 +23,11 @@ const Hero = () => {
             experience. Treat yourself to food that truly satisfies!
           </p>
           <div className="flex items-center gap-10">
-            <button className="text-center pt-1 pb-1.5 text-sm px-10 rounded bg-white text-red-500">
+            <button onClick={() => navigate('/menu')} className="hover:cursor-pointer text-center pt-1 pb-1.5 text-sm px-10 rounded bg-white text-red-500">
               Menu
             </button>
-            <button className="text-center pt-1 pb-1.5 text-sm px-10 rounded bg-red-500 text-white">
-              {user ? "Order" : "Login"}
+            <button onClick={() => navigate('/menu')} className="hover:cursor-pointer text-center pt-1 pb-1.5 text-sm px-10 rounded bg-red-500 text-white">
+              Order
             </button>
           </div>
         </div>

@@ -8,14 +8,13 @@ const Menu = ({ menu }) => {
     setSingles(menu.filter((pizza) => pizza.category === "single"));
     setDoubles(menu.filter((pizza) => pizza.category === "double"));
   }, [menu]);
-  
 
   return (
     <div>
       <section className="w-full px-10 mt-5">
         <div>
           <h1 className="text-center font-bold py-2 text-2xl text-black w-full">
-            {singles.length > 0 && 'Single'}
+            {singles.length > 0 && "Single"}
           </h1>
           <div className="w-full flex items-center gap-4 sm:gap-8 overflow-x-scroll p-4 hide-scrollbar">
             {singles.map((pizza) => {
@@ -49,7 +48,7 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                       {pizza.category === "single" ? "single" : "double decker"}
                     </p>
                     <div className="flex items-center flex-col gap-0.5 mr-1 mt-2">
-                      <div className="flex items-center gap-1 sm:gap-2 text-[0.65rem] sm:text-[0.75rem] mt-1">
+                      <div className="flex items-center gap-1 sm:gap-2 text-[0.55rem] sm:text-[0.65rem] mt-1">
                         {pizza.sizes.map((size, index) => {
                           return (
                             <button
@@ -61,13 +60,20 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                                 });
                               }}
                               key={index}
-                              className={`bg-gray-300 px-3 pb-px rounded hover:bg-gray-500 hover:text-white ${
+                              className={`hover:cursor-pointer bg-gray-300 px-3 pb-1 rounded hover:bg-gray-500 hover:text-white flex items-center flex-col gap-px  ${
                                 selectedSize?.id === pizza.id &&
                                 selectedSize?.size === size.size &&
                                 "bg-gray-500 text-white"
                               }`}
                             >
-                              {size.size}
+                              <span>{size.size}</span>
+                              <div
+                                className={`rounded-full p-0.5  ${
+                                  size.isAvailable === true
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                }`}
+                              ></div>
                             </button>
                           );
                         })}
@@ -78,14 +84,18 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                           : "Select a size above"}
                       </div>
                       <button
-                      onClick={() => {
-                        if(selectedSize?.id === pizza.id && selectedSize?.size){
-                          alert('Added to cart')
-                        } else{
-                          alert('Please select size')
-                        }
-                      }}
-                      className="w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7">
+                        onClick={() => {
+                          if (
+                            selectedSize?.id === pizza.id &&
+                            selectedSize?.size
+                          ) {
+                            alert("Added to cart");
+                          } else {
+                            alert("Please select size");
+                          }
+                        }}
+                        className="hover:cursor-pointer w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7"
+                      >
                         Add
                       </button>
                     </div>
@@ -97,7 +107,7 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
         </div>
         <div className="mt-5">
           <h1 className="text-center font-bold py-2 text-2xl text-black w-full">
-            {doubles.length > 0 && 'Double'}
+            {doubles.length > 0 && "Double"}
           </h1>
           <div className="w-full flex items-center gap-4 sm:gap-8 overflow-x-scroll p-4 hide-scrollbar">
             {doubles.map((pizza) => {
@@ -131,7 +141,7 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                       {pizza.category === "single" ? "single" : "double decker"}
                     </p>
                     <div className="flex items-center flex-col gap-0.5 mr-1 mt-2">
-                      <div className="flex items-center gap-1 sm:gap-2 text-[0.65rem] sm:text-[0.75rem] mt-1">
+                      <div className="flex items-center gap-1 sm:gap-2 text-[0.55rem] sm:text-[0.65rem] mt-1">
                         {pizza.sizes.map((size, index) => {
                           return (
                             <button
@@ -143,13 +153,20 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                                 });
                               }}
                               key={index}
-                              className={`bg-gray-300 px-3 pb-px rounded hover:bg-gray-500 hover:text-white ${
+                              className={`hover:cursor-pointer bg-gray-300 px-3 pb-1 rounded hover:bg-gray-500 hover:text-white flex items-center flex-col gap-px  ${
                                 selectedSize?.id === pizza.id &&
                                 selectedSize?.size === size.size &&
                                 "bg-gray-500 text-white"
                               }`}
                             >
-                              {size.size}
+                              <span>{size.size}</span>
+                              <div
+                                className={`rounded-full p-0.5  ${
+                                  size.isAvailable === true
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                }`}
+                              ></div>
                             </button>
                           );
                         })}
@@ -159,7 +176,7 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                           ? `R${selectedSize.price},00`
                           : "Select a size above"}
                       </div>
-                      <button className="w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7">
+                      <button className="hover:cursor-pointer w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7">
                         Add
                       </button>
                     </div>

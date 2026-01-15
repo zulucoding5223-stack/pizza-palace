@@ -51,7 +51,7 @@ const Menupage = () => {
   return (
     <div className="pt-24 px-10">
       <div className="flex items-center gap-5 flex-col">
-        <div className="w-100 sm:w-120 md:w-130 lg:w-150 flex items-center justify-between p-2 bg-gray-200 hover:cursor-pointer rounded-full px-3 shadow-lg shadow-blue-500 text-[0.85rem]">
+        <div className="w-full flex items-center justify-between p-2 bg-gray-200 hover:cursor-pointer rounded-full px-3 shadow-lg shadow-blue-500 text-[0.85rem]">
           <input
             type="text"
             className="outline-none w-full px-2 text-gray-500"

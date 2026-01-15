@@ -10,6 +10,7 @@ import AdminNavbar from "./components/admin-components/AdminNavbar";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
+import Cart from "./pages/Cart";
 
 const App = () => {
   const { user } = useAppContext();
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/products" element={<Products />} />
         <Route path="/admin/orders" element={<Orders />} />
+        <Route path="/my-cart" element={<Cart />} />
       </Routes>
     </div>
   );

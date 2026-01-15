@@ -28,7 +28,7 @@ const Navbar = () => {
         <div>
           <Link
             to="/"
-            className="w-fit text-2xl flex items-center gap-1 text-blue-400"
+            className="w-fit text-xl sm:text-2xl flex items-center gap-1 text-blue-400"
           >
             <img src={logo} alt="" className="object-center -rotate-20 w-15" />
             <p>Slice&Stack</p>
@@ -73,7 +73,7 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                <button className="hover:cursor-pointer relative rounded-full p-2.5 text-center  bg-gray-300/40 backdrop-blur-md border border-white/30 shadow-lg text-blue-950">
+                <button onClick={() => navigate('/my-cart')} className="hover:cursor-pointer relative rounded-full p-2.5 text-center  bg-gray-300/40 backdrop-blur-md border border-white/30 shadow-lg text-blue-950">
                   <TiShoppingCart />
                   <span className="absolute -top-2 -right-1.5 text-center py-1 px-2 rounded-full text-[0.6rem] text-red-500 bg-blue-950 shadow-lg">
                     0
@@ -171,11 +171,11 @@ const Navbar = () => {
 
         {user && isProfileMenuOpen && (
           <ul className="absolute lg:top-15.5 top-16 lg:right-4.5 md:right-21 right-5 text-[0.85rem] z-5 w-fit bg-gray-50">
-            <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
-              My Cart
+            <li  className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
+              {user.name}
             </li>
-            <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
-              My Profile
+            <li onClick={() => {navigate('/my-cart'); setIsProfileMenuOpen(false); setIsOpen(false)}} className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
+              My Cart
             </li>
             <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
               My Orders

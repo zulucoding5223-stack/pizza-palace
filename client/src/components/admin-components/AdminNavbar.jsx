@@ -28,11 +28,11 @@ const AdminNavbar = () => {
   }, [location.pathname]);
 
   return (
-    <div>
+    <div className="fixed z-5">
       <section>
         {!isOpen ? (
           <div
-            className={`flex flex-col justify-between h-screen w-80 z-20 shadow-xl bg-blue-950 fixed p-5 shadow-black`}
+            className={`flex flex-col justify-between h-screen w-80 z-20 shadow-xl bg-blue-950 p-5 shadow-black`}
           >
             <div>
               <div className="flex items-center gap-3">

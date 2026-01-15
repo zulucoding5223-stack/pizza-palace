@@ -87,11 +87,11 @@ const Products = () => {
                 setSearchInput("");
                 setProducts(pizzaMenu);
               }}
-              className="bg-red-600 text-center rounded-md px-3 text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white"
+              className="bg-red-600 text-center rounded-md px-3 whitespace-nowrap text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white"
             >
               Clear Filter
             </button>
-            <button className="bg-green-600 text-center rounded-md px-3 text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white">
+            <button className="bg-green-600 text-center rounded-md px-3 whitespace-nowrap text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white">
               Add New Product
             </button>
           </div>

@@ -7,7 +7,7 @@ const AdminHeader = () => {
 
   return (
     <div>
-      <section className="pl-21 h-fit py-2 md:pl-81 bg-blue-950 w-full pr-3 shadow-sm shadow-blue-950">
+      <section className="pl-21 h-fit py-2 md:pl-81 bg-blue-950 w-full pr-3 shadow-sm shadow-blue-950 fixed">
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
           <img

@@ -41,9 +41,9 @@ const Products = () => {
   return (
     <div>
       <AdminHeader />
-      <section className="pl-21 md:pl-81 pt-5">
+      <section className="pl-21 md:pl-81 pt-18 ">
         <h1 className="text-3xl text-blue-950 pl-8 md:pl-10">Products</h1>
-        <div className="flex items-center flex-col gap-3 mt-3 px-8 md:px-10 ">
+        <div className="flex items-center flex-col gap-3 mt-3 px-8 md:px-8 ">
           <div className="bg-gray-200 rounded-full w-full flex items-center gap-2 py-1 px-2.5 shadow-md">
             <input
               type="text"
@@ -54,8 +54,9 @@ const Products = () => {
             />
             <IoSearchOutline color="gray" size={"1.5rem"} className="mb-px" />
           </div>
-          <div className="px-auto flex items-center gap-2">
-            <select
+          <div className="px-auto flex items-center flex-col lg:flex-row gap-2">
+            <div className="flex items-center justify-between gap-2">
+              <select
               className="text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem]  bg-gray-200 outline-none px-3 rounded-sm text-start pb-1 pt-0.5"
               value={filter}
               onChange={(e) => {
@@ -91,7 +92,8 @@ const Products = () => {
             >
               Clear Filter
             </button>
-            <button className="bg-green-600 text-center rounded-md px-3 whitespace-nowrap text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-fit text-white">
+            </div>
+            <button className="bg-green-600 text-center rounded-md px-3 whitespace-nowrap text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-full text-white">
               Add New Product
             </button>
           </div>

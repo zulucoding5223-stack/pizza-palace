@@ -11,7 +11,7 @@ const Menu = ({ menu }) => {
 
   return (
     <div>
-      <section className="w-full px-10 mt-5">
+      <section className="w-full px-2 mt-5">
         <div>
           <h1 className="text-center font-bold py-2 text-2xl text-black w-full">
             {singles.length > 0 && "Single"}

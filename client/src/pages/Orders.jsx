@@ -106,8 +106,8 @@ const Orders = () => {
     <div>
       <AdminHeader />
 
-      <div className="pl-21 md:pl-81 px-4 md:px-10 py-6">
-        <h1 className="text-3xl font-semibold mb-6">Orders</h1>
+      <div className="pl-21 md:pl-81 px-4 md:px-10 py-6 pt-18">
+        <h1 className="text-3xl font-semibold mb-6 pl-8">Orders</h1>
 
         {/* Desktop Table */}
         <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow">
@@ -238,7 +238,7 @@ const Orders = () => {
                       [order.id]: e.target.value,
                     })
                   }
-                  className="flex-1 border rounded px-2"
+                  className="w-20 border border-gray-500 hover:cursor-pointer"
                 />
 
                 <button

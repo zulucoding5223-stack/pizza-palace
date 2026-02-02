@@ -24,11 +24,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <section className="px-10 py-5 shadow flex items-center justify-between fixed bg-white z-1 w-full">
+      <section className="px-2 md:px-10 py-5 shadow flex items-center justify-between fixed bg-white z-1 w-full">
         <div>
           <Link
             to="/"
-            className="w-fit text-xl sm:text-2xl flex items-center gap-1 text-blue-400"
+            className="w-fit text-lg sm:text-2xl flex items-center gap-1 text-blue-400"
           >
             <img src={logo} alt="" className="object-center -rotate-20 w-15" />
             <p>Slice&Stack</p>
@@ -177,7 +177,7 @@ const Navbar = () => {
             <li onClick={() => {navigate('/my-cart'); setIsProfileMenuOpen(false); setIsOpen(false)}} className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
               My Cart
             </li>
-            <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
+            <li onClick={() => {navigate('/my-orders'); setIsProfileMenuOpen(false); setIsOpen(false)}} className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
               My Orders
             </li>
             <li

@@ -1,28 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AdminHeader from "../components/admin-components/AdminHeader";
+import { useAppContext } from "../utils/appContext";
 
 const Orders = () => {
-  const [orders, setOrders] = useState([
-    {
-      id: "ORD-001",
-      customer: "John Doe",
-      items: ["Super Pizza (M)", "Vegetarian (S)", "Burger Pizza (L)"],
-      paymentMethod: "paid",
-      createdAt: Date.now(),
-      extraMinutes: 0,
-      isReady: false,
-    },
-    {
-      id: "ORD-002",
-      customer: "Sarah Smith",
-      items: ["Burger Pizza (L)"],
-      paymentMethod: "collection",
-      createdAt: Date.now(),
-      extraMinutes: 0,
-      isReady: false,
-    },
-  ]);
-
+  const { orders, setOrders } = useAppContext();
   const [now, setNow] = useState(Date.now());
   const [minutesInput, setMinutesInput] = useState({});
 
@@ -57,8 +38,7 @@ const Orders = () => {
     if (order.isReady) return "Ready";
 
     const passed = getMinutesPassed(order.createdAt);
-    const totalTime =
-      getBaseTime(order.items.length) + order.extraMinutes;
+    const totalTime = getBaseTime(order.items.length) + order.extraMinutes;
 
     if (passed < 15) return "Processing";
     if (passed < totalTime) return "Cooking";
@@ -118,6 +98,7 @@ const Orders = () => {
                 <th className="px-4 py-3 text-left">Customer</th>
                 <th className="px-4 py-3 text-left">Status</th>
                 <th className="px-4 py-3 text-left">Payment</th>
+                <th className="px-4 py-3 text-left">Total</th>
                 <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
@@ -157,6 +138,11 @@ const Orders = () => {
                         ? "Paid"
                         : "Pay on Collection"}
                     </button>
+                  </td>
+
+                  {/* Total */}
+                  <td className="px-4 py-3">
+                    <span className="font-bold">R{order.total.toFixed(2)}</span>
                   </td>
 
                   <td className="px-4 py-3">
@@ -211,19 +197,21 @@ const Orders = () => {
                 {new Date(order.createdAt).toLocaleString()}
               </p>
 
-              <p className="text-xs text-gray-400">
-                {getTimeLeft(order)}
-              </p>
+              <p className="text-xs text-gray-400">{getTimeLeft(order)}</p>
 
               <p className="text-sm mt-1">{order.customer}</p>
+
+              {/* Total */}
+              <p className="text-sm mt-1">
+                Total:{" "}
+                <span className="font-bold">R{order.total.toFixed(2)}</span>
+              </p>
 
               <button
                 onClick={() => togglePayment(order.id)}
                 className="mt-2 px-3 py-1 rounded-full text-xs whitespace-nowrap bg-gray-100"
               >
-                {order.paymentMethod === "paid"
-                  ? "Paid"
-                  : "Pay on Collection"}
+                {order.paymentMethod === "paid" ? "Paid" : "Pay on Collection"}
               </button>
 
               <div className="flex gap-2 mt-3">

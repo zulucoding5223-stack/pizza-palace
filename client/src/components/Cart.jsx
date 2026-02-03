@@ -1,71 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../utils/appContext";
-import single from "../assets/pictures-of-pizza-23-1.jpg";
-import double from "../assets/OIP.webp";
-import { MdUpdate } from "react-icons/md";
+import { useParams } from "react-router-dom";
 
 const Cart = () => {
-  const { user } = useAppContext();
-
-  const cartData = [
-    {
-      cartId: "CART-001",
-      user: user.name,
-      items: [
-        {
-          pizzaId: "1",
-          name: "Super Pizza",
-          flavour: "chicken and mushroom",
-          category: "single",
-          image: single,
-          sizes: [
-            { size: "S", price: 60, quantity: 1 },
-            { size: "M", price: 80, quantity: 1 },
-            { size: "L", price: 100, quantity: 2 },
-          ],
-        },
-        {
-          pizzaId: "3",
-          name: "Burger Pizza",
-          flavour: "beef",
-          category: "double",
-          image: double,
-          sizes: [
-            { size: "S", price: 60, quantity: 2 },
-            { size: "L", price: 100, quantity: 3 },
-          ],
-        },
-      ],
-    },
-    {
-      cartId: "CART-002",
-      user: "USER-002",
-      items: [
-        {
-          pizzaId: "4",
-          name: "Vegetarian",
-          flavour: "mushroom",
-          category: "single",
-          image: single,
-          size: "S",
-          price: 60,
-          quantity: 1,
-        },
-        {
-          pizzaId: "6",
-          name: "Beef and Mushroom",
-          flavour: "beef",
-          category: "single",
-          image: single,
-          size: "L",
-          price: 100,
-          quantity: 3,
-        },
-      ],
-    },
-  ];
-
-  const userCart = cartData.find((cart) => cart.user === user.name);
+  const { user, cartData, setCartQuantity, orders, cartState, setOrders } =
+    useAppContext();
+  const params = useParams();
+  const orderId = params.id;
+  const userCart =
+    cartState === "orders"
+      ? orders.find((cart) => String(cart.id) === String(orderId))
+      : cartData.find((cart) => cart.user === user.name);
+  console.log("userCart:", userCart);
   const [cartItems, setCartItems] = useState(userCart.items);
 
   const handleQuantityTotal = () => {
@@ -100,9 +46,16 @@ const Cart = () => {
 
     return totalPrice;
   };
+  const [cartQuantityT, setQartQuantityT] = useState(0);
+  const [cartTotalT, setQartTotalT] = useState(0);
 
-  const cartQuantityTotal = handleQuantityTotal();
-  const cartPriceTotal = handlePriceTotal();
+  useEffect(() => {
+    const cartQuantityTotal = handleQuantityTotal();
+    const cartPriceTotal = handlePriceTotal();
+    setCartQuantity(cartQuantityTotal);
+    setQartQuantityT(cartQuantityTotal);
+    setQartTotalT(cartPriceTotal);
+  }, [cartItems]);
 
   const [productId, setProductId] = useState("");
 
@@ -137,10 +90,42 @@ const Cart = () => {
     setCartItems(newCart);
   };
 
+  const handleDeleteItem = (id) => {
+    for (let i = 0; i < cartItems.length; i++) {
+      if (cartItems[i].pizzaId === id) {
+        setCartItems((prev) =>
+          prev.filter((cartItem) => cartItem.pizzaId !== id),
+        );
+      }
+    }
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
+  const handleOrderCreation = () => {
+    const newOrder = {
+      id: Date.now(),
+      customer: user.name,
+      items: cartItems,
+      paymentMethod: "paid",
+      createdAt: Date.now(),
+      extraMinutes: 0,
+      isReady: false,
+      total: cartTotalT,
+    };
+
+    const newOrdersCart = [...orders, newOrder];
+    setOrders(newOrdersCart);
+  };
+
   return (
     <div className="pt-24 px-10">
       <p className="text-blue-700 mb-5 text-sm px-auto w-full flex items-center justify-between md:w-full px-auto">
-        <span className="">My Cart</span>
+        <span className="">
+          {cartState === "orders" ? "My Orders" : "My Cart"}
+        </span>
         <span className="text-[0.85rem] whitespace-nowrap">
           {userCart?.user}
         </span>
@@ -148,9 +133,28 @@ const Cart = () => {
           {userCart.cartId}
         </span>
         <span className="text-[0.85rem] whitespace-nowrap">
-          Quantity: {cartQuantityTotal}
+          Quantity: {cartQuantityT}
         </span>
       </p>
+      {cartState === "orders" && (
+        <div className="w-full rounded-lg py-1 flex items-center flex-col gap-2 text-[0.85rem] mb-2">
+          <div className="flex items-center justify-between gap-5">
+            <span className="whitespace-nowrap">
+              <strong>Date:</strong>{" "}
+              {new Date(userCart.createdAt).toLocaleDateString()}
+            </span>
+            <span className="whitespace-nowrap">
+              <strong>Time:</strong>{" "}
+              {new Date(userCart.createdAt).toLocaleTimeString()}
+            </span>
+          </div>
+
+          <span className="whitespace-nowrap">
+            <strong>Ready:</strong>{" "}
+            {userCart.isReady ? "Ready for collection" : "Still Processing"}
+          </span>
+        </div>
+      )}
       <div className="md:hidden">
         <div className="flex flex-col items-center gap-3">
           {cartItems.map((item) => {
@@ -203,7 +207,7 @@ const Cart = () => {
                                 updateQuantity(
                                   item.pizzaId,
                                   index,
-                                  e.target.value
+                                  e.target.value,
                                 );
                               }}
                             />
@@ -221,39 +225,68 @@ const Cart = () => {
                     );
                   })}
                 </div>
-                <div className="flex items-center w-full justify-between gap-2">
-                  <button
-                    onClick={() => {
-                      setProductId((prev) =>
-                        prev === item.pizzaId ? "" : item.pizzaId
-                      );
-                    }}
-                    className="text-[0.85rem] w-full pb-0.75 pt-0.5 rounded-lg text-white bg-blue-500 hover:cursor-pointer hover:bg-blue-700"
-                  >
-                    {productId === item.pizzaId ? "Done" : "Edit"}
-                  </button>
-                  <button className="text-[0.85rem] w-full pb-0.75 pt-0.5 rounded-lg text-white bg-red-500 hover:cursor-pointer hover:bg-red-700">
-                    Delete
-                  </button>
-                </div>
+                {cartState === "orders" ? (
+                  <></>
+                ) : (
+                  <div className="flex items-center w-full justify-between gap-2">
+                    <button
+                      onClick={() => {
+                        setProductId((prev) =>
+                          prev === item.pizzaId ? "" : item.pizzaId,
+                        );
+                      }}
+                      className="text-[0.85rem] w-full pb-0.75 pt-0.5 rounded-lg text-white bg-blue-500 hover:cursor-pointer hover:bg-blue-700"
+                    >
+                      {productId === item.pizzaId ? "Done" : "Edit"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleDeleteItem(item.pizzaId);
+                      }}
+                      className="text-[0.85rem] w-full pb-0.75 pt-0.5 rounded-lg text-white bg-red-500 hover:cursor-pointer hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
         <div className="flex items-center justify-around w-full bg-red-50 mt-5">
+          <span className="whitespace-nowrap">Quantity: {cartQuantityT}</span>
           <span className="whitespace-nowrap">
-            Quantity: {cartQuantityTotal}
-          </span>
-          <span className="whitespace-nowrap">
-            Cart Total: R{cartPriceTotal.toFixed(2)}
+            {cartState === "orders" ? "Order Total" : "Cart Total"}: R
+            {cartTotalT.toFixed(2)}
           </span>
         </div>
-        <button className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3">
-          Order
-        </button>
-        <button className="w-full bg-orange-500 text-white hover:bg-orange-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3 whitespace-nowrap mb-5">
-          Clear Cart
-        </button>
+
+        {cartState === "orders" ? (
+          <></>
+        ) : (
+          <div>
+            <button
+              onClick={() => {
+                alert(
+                  "Order successfully placed! View your order so that you can also track it!",
+                );
+                handleOrderCreation();
+                handleClearCart();
+              }}
+              className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3"
+            >
+              Order
+            </button>
+            <button
+              onClick={() => {
+                handleClearCart();
+              }}
+              className="w-full bg-orange-500 text-white hover:bg-orange-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3 whitespace-nowrap mb-5"
+            >
+              Clear Cart
+            </button>
+          </div>
+        )}
       </div>
 
       <div>
@@ -277,9 +310,11 @@ const Cart = () => {
                   <th className="text-left px-4 py-3 whitespace-nowrap">
                     Item Total
                   </th>
-                  <th className="text-center px-4 py-3 whitespace-nowrap">
-                    Actions
-                  </th>
+                  {cartState !== "orders" && (
+                    <th className="text-center px-4 py-3 whitespace-nowrap">
+                      Actions
+                    </th>
+                  )}
                 </tr>
               </thead>
 
@@ -287,7 +322,7 @@ const Cart = () => {
                 {cartItems.map((item) => {
                   const itemTotal = item.sizes.reduce(
                     (sum, size) => sum + size.price * size.quantity,
-                    0
+                    0,
                   );
 
                   return (
@@ -320,7 +355,6 @@ const Cart = () => {
                         </span>
                       </td>
 
-                      
                       <td className="px-4 py-3">
                         <div className="flex flex-col gap-1">
                           {item.sizes.map((size, index) => (
@@ -339,7 +373,7 @@ const Cart = () => {
                                     updateQuantity(
                                       item.pizzaId,
                                       index,
-                                      e.target.value
+                                      e.target.value,
                                     )
                                   }
                                 />
@@ -356,23 +390,30 @@ const Cart = () => {
                         R{itemTotal.toFixed(2)}
                       </td>
 
-                      <td className="px-4 py-3">
-                        <div className="flex justify-center gap-2">
-                          <button
-                            onClick={() =>
-                              setProductId((prev) =>
-                                prev === item.pizzaId ? "" : item.pizzaId
-                              )
-                            }
-                            className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-700 whitespace-nowrap"
-                          >
-                            {productId === item.pizzaId ? "Done" : "Edit"}
-                          </button>
-                          <button className="px-3 py-1 bg-red-500 text-white rounded-md text-xs hover:bg-red-700 whitespace-nowrap">
-                            Delete
-                          </button>
-                        </div>
-                      </td>
+                      {cartState !== "orders" && (
+                        <td className="px-4 py-3">
+                          <div className="flex justify-center gap-2">
+                            <button
+                              onClick={() =>
+                                setProductId((prev) =>
+                                  prev === item.pizzaId ? "" : item.pizzaId,
+                                )
+                              }
+                              className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-700 whitespace-nowrap"
+                            >
+                              {productId === item.pizzaId ? "Done" : "Edit"}
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleDeleteItem(item.pizzaId);
+                              }}
+                              className="px-3 py-1 bg-red-500 text-white rounded-md text-xs hover:bg-red-700 whitespace-nowrap"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
@@ -381,22 +422,28 @@ const Cart = () => {
           </div>
 
           <div className="flex justify-between items-center bg-red-50 px-6 py-4 mt-4 rounded-lg">
-            <span className="whitespace-nowrap">
-              Quantity: {cartQuantityTotal}
-            </span>
+            <span className="whitespace-nowrap">Quantity: {cartQuantityT}</span>
             <span className="font-bold whitespace-nowrap">
-              Cart Total: R{cartPriceTotal.toFixed(2)}
+              {cartState === "orders" ? "Order Total" : "Cart Total"}: R
+              {cartTotalT.toFixed(2)}
             </span>
           </div>
 
-          <div className="flex gap-3 mt-4">
-            <button className="w-full bg-green-500 text-white hover:bg-green-700 text-sm py-2 rounded-lg">
-              Order
-            </button>
-            <button className="w-full bg-orange-500 text-white hover:bg-orange-700 text-sm py-2 rounded-lg whitespace-nowrap">
-              Clear Cart
-            </button>
-          </div>
+          {cartState !== "orders" && (
+            <div className="flex gap-3 mt-4">
+              <button className="w-full bg-green-500 text-white hover:bg-green-700 text-sm py-2 rounded-lg">
+                Order
+              </button>
+              <button
+                onClick={() => {
+                  handleClearCart();
+                }}
+                className="w-full bg-orange-500 text-white hover:bg-orange-700 text-sm py-2 rounded-lg whitespace-nowrap"
+              >
+                Clear Cart
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

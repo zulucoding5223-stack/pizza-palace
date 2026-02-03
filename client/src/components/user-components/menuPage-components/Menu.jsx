@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useAppContext } from "../../../utils/appContext";
 
 const Menu = ({ menu }) => {
   const [singles, setSingles] = useState([]);
@@ -8,6 +9,94 @@ const Menu = ({ menu }) => {
     setSingles(menu.filter((pizza) => pizza.category === "single"));
     setDoubles(menu.filter((pizza) => pizza.category === "double"));
   }, [menu]);
+
+  const [cartItem, setCartItem] = useState("");
+
+  const { user, setCart, cartData, setCartData } = useAppContext();
+  const handleAddingItem = (pizza) => {
+    if (!selectedSize) {
+      alert("Please select a size");
+      return;
+    }
+
+    // 1️⃣ Copy cart (NEVER mutate state)
+    const updatedCart = [...cartData];
+
+    // 2️⃣ Find user's cart
+    let userCart = updatedCart.find((c) => c.user === user.name);
+
+    // 3️⃣ If user has NO cart → create one
+    if (!userCart) {
+      updatedCart.push({
+        cartId: `CART-${Date.now()}`,
+        user: user.name,
+        items: [
+          {
+            pizzaId: pizza.id,
+            name: pizza.name,
+            flavour: pizza.flavour,
+            category: pizza.category,
+            image: pizza.image,
+            sizes: [
+              {
+                size: selectedSize.size,
+                price: selectedSize.price,
+                quantity: 1,
+              },
+            ],
+          },
+        ],
+      });
+
+      setCartData(updatedCart);
+      return;
+    }
+
+    // 4️⃣ Find pizza in cart
+    let pizzaInCart = userCart.items.find((p) => p.pizzaId === pizza.id);
+
+    // 5️⃣ If pizza NOT in cart → add it
+    if (!pizzaInCart) {
+      userCart.items.push({
+        pizzaId: pizza.id,
+        name: pizza.name,
+        flavour: pizza.flavour,
+        category: pizza.category,
+        image: pizza.image,
+        sizes: [
+          {
+            size: selectedSize.size,
+            price: selectedSize.price,
+            quantity: 1,
+          },
+        ],
+      });
+
+      setCartData(updatedCart);
+      return;
+    }
+
+    // 6️⃣ Find size in pizza
+    let sizeInCart = pizzaInCart.sizes.find(
+      (s) => s.size === selectedSize.size,
+    );
+
+    // 7️⃣ If size exists → increase quantity
+    if (sizeInCart) {
+      sizeInCart.quantity += 1;
+    }
+    // 8️⃣ If size does NOT exist → add new size
+    else {
+      pizzaInCart.sizes.push({
+        size: selectedSize.size,
+        price: selectedSize.price,
+        quantity: 1,
+      });
+    }
+
+    // 9️⃣ Update state
+    setCartData(updatedCart);
+  };
 
   return (
     <div>
@@ -85,14 +174,12 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                       </div>
                       <button
                         onClick={() => {
-                          if (
-                            selectedSize?.id === pizza.id &&
-                            selectedSize?.size
-                          ) {
-                            alert("Added to cart");
-                          } else {
-                            alert("Please select size");
+                          if (!user) {
+                            alert("Please login!");
+                            return;
                           }
+
+                          handleAddingItem(pizza);
                         }}
                         className="hover:cursor-pointer w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7"
                       >
@@ -176,7 +263,17 @@ shrink-0 h-47 sm:h-50 border border-red-200 hover:shadow-red-200 rounded-2xl hov
                           ? `R${selectedSize.price},00`
                           : "Select a size above"}
                       </div>
-                      <button className="hover:cursor-pointer w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7">
+                      <button
+                        onClick={() => {
+                          if (!user) {
+                            alert("Please login!");
+                            return;
+                          }
+
+                          handleAddingItem(pizza);
+                        }}
+                        className="hover:cursor-pointer w-full bg-blue-950 hover:bg-blue-700 mt-1 text-white text-[0.75rem] rounded h-5 sm:h-7"
+                      >
                         Add
                       </button>
                     </div>

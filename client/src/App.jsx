@@ -10,8 +10,10 @@ import AdminNavbar from "./components/admin-components/AdminNavbar";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
-import Cart from "./pages/Cart";
+import Cart from "./components/Cart";
 import MyOrders from "./pages/MyOrders";
+import MyCart from "./pages/MyCart";
+import ViewOrders from "./pages/ViewOrders";
 
 const App = () => {
   const { user } = useAppContext();
@@ -26,8 +28,9 @@ const App = () => {
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/products" element={<Products />} />
         <Route path="/admin/orders" element={<Orders />} />
-        <Route path="/my-cart" element={<Cart />} />
+        <Route path="/my-cart" element={<MyCart />} />
         <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/view-my-orders/:id" element={<ViewOrders />} />
       </Routes>
     </div>
   );

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../utils/appContext";
+import { useNavigate } from "react-router-dom";
 
 const MyOrders = () => {
-  const { orders, user } = useAppContext();
+  const { orders, user, setCartState } = useAppContext();
+  const navigate = useNavigate();
 
   // Filter orders based on user role
   const userOrders = user
     ? user.role === "admin"
       ? orders
       : orders.filter(
-          (order) => order.customer.toLowerCase() === user.name.toLowerCase()
+          (order) => order.customer.toLowerCase() === user.name.toLowerCase(),
         )
     : [];
 
@@ -83,7 +85,14 @@ const MyOrders = () => {
 
           <tbody>
             {userOrders.map((order) => (
-              <tr key={order.id} className="border-t">
+              <tr
+                onClick={() => {
+                  navigate(`/view-my-orders/${order.id}`);
+                  setCartState("orders");
+                }}
+                key={order.id}
+                className="border-t"
+              >
                 <td className="px-4 py-3 font-semibold">
                   {order.id}
                   <p className="text-xs text-gray-500">
@@ -130,7 +139,14 @@ const MyOrders = () => {
       {/* Mobile Cards */}
       <div className="md:hidden flex flex-col gap-4">
         {userOrders.map((order) => (
-          <div key={order.id} className="bg-white p-4 rounded-xl shadow">
+          <div
+            onClick={() => {
+                  navigate(`/view-my-orders/${order.id}`);
+                  setCartState("orders");
+                }}
+            key={order.id}
+            className="bg-white p-4 rounded-xl shadow"
+          >
             <div className="flex justify-between mb-1">
               <h3 className="font-semibold">{order.id}</h3>
               <span className="text-xs text-gray-500">{getStatus(order)}</span>

@@ -18,8 +18,41 @@ const Navbar = () => {
     setIsClicked(page);
   }, [location]);
 
-  const { logout, user } = useAppContext();
+  const {
+    logout,
+    user,
+    cartData,
+    setCart,
+    cartQuantity,
+    setCartQuantity,
+    setCartState,
+  } = useAppContext();
 
+  useEffect(() => {
+    const userCart = cartData?.find((cart) => cart.user === user?.name);
+    setCart(userCart);
+    const handleQuantityDisplay = () => {
+      let cartTotal = 0;
+      if (!userCart) {
+        setCartQuantity(0);
+        return;
+      }
+      for (let i = 0; i < userCart?.items?.length; i++) {
+        const currentItem = userCart.items[i];
+        let currentItemQuantity = 0;
+        for (let j = 0; j < currentItem.sizes?.length; j++) {
+          currentItemQuantity += currentItem.sizes[j].quantity;
+        }
+        cartTotal += currentItemQuantity;
+      }
+
+      setCartQuantity(cartTotal);
+    };
+
+    handleQuantityDisplay();
+  }, [user, cartData]);
+
+  console.log();
   const navLinks = ["Home", "Menu", "Location", "Communications"];
   const navigate = useNavigate();
   return (
@@ -73,10 +106,16 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                <button onClick={() => navigate('/my-cart')} className="hover:cursor-pointer relative rounded-full p-2.5 text-center  bg-gray-300/40 backdrop-blur-md border border-white/30 shadow-lg text-blue-950">
+                <button
+                  onClick={() => {
+                    navigate("/my-cart");
+                    setCartState("");
+                  }}
+                  className="hover:cursor-pointer relative rounded-full p-2.5 text-center  bg-gray-300/40 backdrop-blur-md border border-white/30 shadow-lg text-blue-950"
+                >
                   <TiShoppingCart />
-                  <span className="absolute -top-2 -right-1.5 text-center py-1 px-2 rounded-full text-[0.6rem] text-red-500 bg-blue-950 shadow-lg">
-                    0
+                  <span className="absolute -top-2 -right-1.5 text-center py-1 px-2 rounded-full text-[0.6rem] text-white bg-blue-950 shadow-lg">
+                    {cartQuantity}
                   </span>
                 </button>
                 <button
@@ -171,13 +210,29 @@ const Navbar = () => {
 
         {user && isProfileMenuOpen && (
           <ul className="absolute lg:top-15.5 top-16 lg:right-4.5 md:right-21 right-5 text-[0.85rem] z-5 w-fit bg-gray-50">
-            <li  className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
+            <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
               {user.name}
             </li>
-            <li onClick={() => {navigate('/my-cart'); setIsProfileMenuOpen(false); setIsOpen(false)}} className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
+            <li
+              onClick={() => {
+                navigate("/my-cart");
+                setIsProfileMenuOpen(false);
+                setIsOpen(false);
+                setCartState("")
+              }}
+              className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer"
+            >
               My Cart
             </li>
-            <li onClick={() => {navigate('/my-orders'); setIsProfileMenuOpen(false); setIsOpen(false)}} className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
+            <li
+              onClick={() => {
+                navigate("/my-orders");
+                setIsProfileMenuOpen(false);
+                setIsOpen(false);
+                setCartState("orders")
+              }}
+              className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer"
+            >
               My Orders
             </li>
             <li

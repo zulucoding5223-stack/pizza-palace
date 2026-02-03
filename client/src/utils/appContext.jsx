@@ -96,13 +96,75 @@ const pizzaMenu = [
   },
 ];
 
+const userCart = [
+  {
+    cartId: "CART-001",
+    user: "John Doe",
+    items: [
+      {
+        pizzaId: "1",
+        name: "Super Pizza",
+        flavour: "chicken and mushroom",
+        category: "single",
+        image: single,
+        sizes: [
+          { size: "S", price: 60, quantity: 1 },
+          { size: "M", price: 80, quantity: 1 },
+          { size: "L", price: 100, quantity: 2 },
+        ],
+      },
+      {
+        pizzaId: "3",
+        name: "Burger Pizza",
+        flavour: "beef",
+        category: "double",
+        image: double,
+        sizes: [
+          { size: "S", price: 60, quantity: 2 },
+          { size: "L", price: 100, quantity: 3 },
+        ],
+      },
+    ],
+  },
+  {
+    cartId: "CART-002",
+    user: "USER-002",
+    items: [
+      {
+        pizzaId: "4",
+        name: "Vegetarian",
+        flavour: "mushroom",
+        category: "single",
+        image: single,
+        size: "S",
+        price: 60,
+        quantity: 1,
+      },
+      {
+        pizzaId: "6",
+        name: "Beef and Mushroom",
+        flavour: "beef",
+        category: "single",
+        image: single,
+        size: "L",
+        price: 100,
+        quantity: 3,
+      },
+    ],
+  },
+];
+
 export const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [cartData, setCartData] = useState(userCart);
+  const [cart, setCart] = useState("");
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const [cartState, setCartState] = useState("");
 
   const login = (email, password) => {
     const foundUser = dummyUsers.find(
-      (u) => u.email === email && u.password === password
+      (u) => u.email === email && u.password === password,
     );
 
     if (!foundUser) {
@@ -118,12 +180,36 @@ export const AppContextProvider = ({ children }) => {
     {
       id: "ORD-001",
       customer: "John Doe",
-      items: ["Super Pizza (M)", "Vegetarian (S)", "Burger Pizza (L)"],
+      items: [
+        {
+          pizzaId: "1",
+          name: "Super Pizza",
+          flavour: "chicken and mushroom",
+          category: "single",
+          image: single,
+          sizes: [
+            { size: "S", price: 60, quantity: 1 },
+            { size: "M", price: 80, quantity: 1 },
+            { size: "L", price: 100, quantity: 2 },
+          ],
+        },
+        {
+          pizzaId: "3",
+          name: "Burger Pizza",
+          flavour: "beef",
+          category: "double",
+          image: double,
+          sizes: [
+            { size: "S", price: 60, quantity: 2 },
+            { size: "L", price: 100, quantity: 1 },
+          ],
+        },
+      ],
       paymentMethod: "paid",
       createdAt: Date.now(),
       extraMinutes: 0,
       isReady: false,
-      total: 800
+      total: 800,
     },
     {
       id: "ORD-002",
@@ -133,7 +219,7 @@ export const AppContextProvider = ({ children }) => {
       createdAt: Date.now(),
       extraMinutes: 0,
       isReady: false,
-      total: 800
+      total: 800,
     },
   ]);
 
@@ -148,6 +234,14 @@ export const AppContextProvider = ({ children }) => {
         pizzaMenu,
         orders,
         setOrders,
+        cartData,
+        setCartData,
+        cart,
+        setCart,
+        cartQuantity,
+        setCartQuantity,
+        cartState,
+        setCartState,
       }}
     >
       {children}

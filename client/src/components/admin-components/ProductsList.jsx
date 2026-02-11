@@ -1,11 +1,13 @@
 import React from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const ProductsList = ({ products, setProducts }) => {
   const handleProductDelete = (id) => {
     setProducts(products.filter((product) => product.id !== id));
   };
+  const navigate = useNavigate();
 
   return (
     <div className="pl-21 md:pl-81 mt-5">
@@ -72,7 +74,7 @@ const ProductsList = ({ products, setProducts }) => {
 
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-center gap-3">
-                      <button className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
+                      <button onClick={() => {navigate(`/admin/edit-product/${pizza.id}`)}} className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
                         <FaEdit size={16} />
                       </button>
                       <button
@@ -133,7 +135,7 @@ const ProductsList = ({ products, setProducts }) => {
                 </div>
 
                 <div className="flex gap-2 mt-3">
-                  <button className="flex-1 bg-blue-600 text-white py-1.5 rounded-md">
+                  <button onClick={() => {navigate(`/admin/edit-product/${pizza.id}`)}} className="flex-1 bg-blue-600 text-white py-1.5 rounded-md">
                     Edit
                   </button>
                   <button

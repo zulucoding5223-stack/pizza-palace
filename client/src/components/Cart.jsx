@@ -116,7 +116,7 @@ const Cart = () => {
       total: cartTotalT,
     };
 
-    const newOrdersCart = [...orders, newOrder];
+    let newOrdersCart = [newOrder, ...orders];
     setOrders(newOrdersCart);
   };
 
@@ -431,7 +431,16 @@ const Cart = () => {
 
           {cartState !== "orders" && (
             <div className="flex gap-3 mt-4">
-              <button className="w-full bg-green-500 text-white hover:bg-green-700 text-sm py-2 rounded-lg">
+              <button
+                onClick={() => {
+                  alert(
+                    "Order successfully placed! View your order so that you can also track it!",
+                  );
+                  handleOrderCreation();
+                  handleClearCart();
+                }}
+                className="w-full bg-green-500 text-white hover:bg-green-700 text-sm py-2 rounded-lg"
+              >
                 Order
               </button>
               <button

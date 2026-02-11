@@ -28,6 +28,11 @@ const pizzaMenu = [
     flavour: "chicken and mashroom",
     category: "single",
     image: single,
+    ratings: [
+      { user: "Julia Doe", stars: 2, review: "The Pizza is amazing." },
+      { user: "Jane Doe", stars: 1, review: "The Pizza is amazing." },
+      { user: "Jack Doe", stars: 1, review: "The Pizza is amazing." },
+    ],
     sizes: [
       { price: 60, size: "S", isAvailable: false },
       { price: 80, size: "M", isAvailable: true },
@@ -40,6 +45,11 @@ const pizzaMenu = [
     flavour: "beef",
     category: "double",
     image: double,
+    ratings: [
+      { user: "Julia Doe", stars: 3, review: "The Pizza is amazing." },
+      { user: "Jane Doe", stars: 5, review: "The Pizza is amazing." },
+      { user: "Jack Doe", stars: 4, review: "The Pizza is amazing." },
+    ],
     sizes: [
       { price: 120, size: "S", isAvailable: true },
       { price: 160, size: "M", isAvailable: true },
@@ -52,6 +62,11 @@ const pizzaMenu = [
     flavour: "beef",
     category: "double",
     image: double,
+    ratings: [
+      { user: "Julia Doe", stars: 3, review: "The Pizza is amazing." },
+      { user: "Jane Doe", stars: 5, review: "The Pizza is amazing." },
+      { user: "Jack Doe", stars: 4, review: "The Pizza is amazing." },
+    ],
     sizes: [
       { price: 120, size: "S", isAvailable: true },
       { price: 160, size: "M", isAvailable: true },
@@ -64,6 +79,11 @@ const pizzaMenu = [
     flavour: "mashroom",
     category: "single",
     image: single,
+    ratings: [
+      { user: "Julia Doe", stars: 3, review: "The Pizza is amazing." },
+      { user: "Jane Doe", stars: 5, review: "The Pizza is amazing." },
+      { user: "Jack Doe", stars: 4, review: "The Pizza is amazing." },
+    ],
     sizes: [
       { price: 60, size: "S", isAvailable: true },
       { price: 80, size: "M", isAvailable: false },
@@ -76,6 +96,11 @@ const pizzaMenu = [
     flavour: "mashroom",
     category: "double",
     image: double,
+    ratings: [
+      { user: "Julia Doe", stars: 3, review: "The Pizza is amazing." },
+      { user: "Jane Doe", stars: 5, review: "The Pizza is amazing." },
+      { user: "Jack Doe", stars: 4, review: "The Pizza is amazing." },
+    ],
     sizes: [
       { price: 120, size: "S", isAvailable: true },
       { price: 160, size: "M", isAvailable: true },
@@ -88,6 +113,11 @@ const pizzaMenu = [
     flavour: "beef",
     category: "single",
     image: single,
+    ratings: [
+      { user: "Julia Doe", stars: 3, review: "The Pizza is amazing." },
+      { user: "Jane Doe", stars: 5, review: "The Pizza is amazing." },
+      { user: "Jack Doe", stars: 4, review: "The Pizza is amazing." },
+    ],
     sizes: [
       { price: 60, size: "S", isAvailable: true },
       { price: 80, size: "M", isAvailable: true },

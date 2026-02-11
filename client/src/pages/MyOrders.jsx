@@ -8,9 +8,9 @@ const MyOrders = () => {
 
   // Filter orders based on user role
   const userOrders = user
-    ? user.role === "admin"
+    ? user?.role === "admin"
       ? orders
-      : orders.filter(
+      : orders?.filter(
           (order) => order.customer.toLowerCase() === user.name.toLowerCase(),
         )
     : [];

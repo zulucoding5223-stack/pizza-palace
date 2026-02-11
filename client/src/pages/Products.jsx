@@ -3,12 +3,14 @@ import AdminHeader from "../components/admin-components/AdminHeader";
 import { IoSearchOutline } from "react-icons/io5";
 import ProductsList from "../components/admin-components/ProductsList";
 import { useAppContext } from "../utils/appContext";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [filter, setFilter] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const { pizzaMenu } = useAppContext();
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let filtered = pizzaMenu;
@@ -93,7 +95,7 @@ const Products = () => {
               Clear Filter
             </button>
             </div>
-            <button className="bg-green-600 text-center rounded-md px-3 whitespace-nowrap text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-full text-white">
+            <button onClick={() => {navigate('/admin/create-product')}} className="bg-green-600 text-center rounded-md px-3 whitespace-nowrap text-[0.72rem]  md:text-[0.81rem] lg:text-[0.85rem] pt-0.5 pb-1 w-full text-white">
               Add New Product
             </button>
           </div>

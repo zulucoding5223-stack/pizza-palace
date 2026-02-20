@@ -30,6 +30,11 @@ const Menu = ({ menu }) => {
       return;
     }
 
+    if (pizza.id !== selectedSize.id) {
+      alert("Please select a size!");
+      return;
+    }
+
     for (let i = 0; i < pizza.sizes.length; i++) {
       if (selectedSize.size === pizza.sizes[i].size) {
         if (pizza.sizes[i].isAvailable === false) {
@@ -118,7 +123,6 @@ const Menu = ({ menu }) => {
     setCartData(updatedCart);
   };
   const navigate = useNavigate();
-  const [pizzaStars, setPizzaStars] = useState(0);
 
   const calculateStars = (pizza) => {
     let totalStars = 0;

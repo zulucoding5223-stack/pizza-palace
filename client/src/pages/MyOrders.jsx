@@ -79,6 +79,7 @@ const MyOrders = () => {
               <th className="px-4 py-3 text-left">Status</th>
               <th className="px-4 py-3 text-left">Payment</th>
               <th className="px-4 py-3 text-left">Total</th>
+              <th className="px-4 py-3 text-left">Collected</th>
               <th className="px-4 py-3 text-left">Items</th>
             </tr>
           </thead>
@@ -127,6 +128,12 @@ const MyOrders = () => {
                   <span className="font-bold">R{order.total?.toFixed(2)}</span>
                 </td>
 
+                <td className="px-5 py-3">
+                  <span className="font-bold">
+                    {order.isCollected ? "Yes" : "No"}
+                  </span>
+                </td>
+
                 <td className="px-4 py-3">
                   <p className="text-xs">{order.items.length} item(s)</p>
                 </td>
@@ -141,15 +148,22 @@ const MyOrders = () => {
         {userOrders.map((order) => (
           <div
             onClick={() => {
-                  navigate(`/view-my-orders/${order.id}`);
-                  setCartState("orders");
-                }}
+              navigate(`/view-my-orders/${order.id}`);
+              setCartState("orders");
+            }}
             key={order.id}
             className="bg-white p-4 rounded-xl shadow"
           >
             <div className="flex justify-between mb-1">
               <h3 className="font-semibold">{order.id}</h3>
-              <span className="text-xs text-gray-500">{getStatus(order)}</span>
+              <div className="flex flex-row items-start gap-2">
+                <span className="text-xs text-gray-500">
+                  {getStatus(order)}
+                </span> <span className="-mt-1.5">-</span>
+                <span className="text-xs text-gray-500">
+                  {order.isCollected ? "Collected" : "Not Collected"}
+                </span>
+              </div>
             </div>
 
             <p className="text-xs text-gray-500">

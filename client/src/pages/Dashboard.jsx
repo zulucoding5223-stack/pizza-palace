@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminHeader from "../components/admin-components/AdminHeader";
 import { useAppContext } from "../utils/appContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { orders, pizzaMenu } = useAppContext();
+  const { orders, pizzaMenu, setCartState } = useAppContext();
+  const navigate = useNavigate();
+
+  const [pending, setPending] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    let pendingTotal = 0;
+    for (let i = 0; i < orders.length; i++) {
+      const currentOrder = orders[i];
+
+      if (currentOrder.isCollected === true) {
+        total += currentOrder.total;
+      } else {
+        pendingTotal += 1;
+      }
+    }
+    setRevenue(total);
+    setPending(pendingTotal);
+  }, [orders]);
 
   return (
     <div>
@@ -36,12 +57,16 @@ const Dashboard = () => {
 
           <div className="bg-white p-5 rounded-xl shadow">
             <p className="text-sm text-gray-500">Pending Orders</p>
-            <p className="text-2xl font-bold text-gray-900 mt-2">—</p>
+            <p className="text-2xl font-bold text-gray-900 mt-2">
+              {pending ? `${pending}` : "-"}
+            </p>
           </div>
 
           <div className="bg-white p-5 rounded-xl shadow">
             <p className="text-sm text-gray-500">Revenue</p>
-            <p className="text-2xl font-bold text-gray-900 mt-2">—</p>
+            <p className="text-2xl font-bold text-gray-900 mt-2">
+              {revenue ? `R${revenue.toFixed(2)}` : "-"}
+            </p>
           </div>
         </div>
 
@@ -92,7 +117,13 @@ const Dashboard = () => {
                       R{order.total}
                     </td>
                     <td className="px-5 py-4 text-right">
-                      <button className="px-4 py-2 text-sm border rounded-lg shadow-sm hover:bg-gray-100 transition">
+                      <button
+                        onClick={() => {
+                          navigate(`/admin/view-user-orders/${order.id}`);
+                          setCartState("orders");
+                        }}
+                        className="px-4 py-2 text-sm border rounded-lg shadow-sm hover:bg-gray-100 transition"
+                      >
                         View
                       </button>
                     </td>
@@ -111,10 +142,7 @@ const Dashboard = () => {
 
           <div className="space-y-6">
             {pizzaMenu.map((pizza) => (
-              <div
-                key={pizza.id}
-                className="bg-white rounded-xl shadow p-6"
-              >
+              <div key={pizza.id} className="bg-white rounded-xl shadow p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
@@ -141,9 +169,7 @@ const Dashboard = () => {
                           {"☆".repeat(5 - rating.stars)}
                         </p>
                       </div>
-                      <p className="text-sm text-gray-600">
-                        {rating.review}
-                      </p>
+                      <p className="text-sm text-gray-600">{rating.review}</p>
                     </div>
                   ))}
                 </div>

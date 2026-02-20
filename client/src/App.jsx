@@ -17,6 +17,7 @@ import ViewOrders from "./pages/ViewOrders";
 import ProductPage from "./pages/ProductPage";
 import CreateProduct from "./pages/CreateProduct";
 import EditProduct from "./pages/EditProduct";
+import UserOrders from "./pages/userOrders";
 
 const App = () => {
   const { user } = useAppContext();
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/my-cart" element={<MyCart />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/view-my-orders/:id" element={<ViewOrders />} />
+        <Route path="/admin/view-user-orders/:id" element={<UserOrders />} />
         <Route path="/menu/:id" element={<ProductPage />} />
         <Route path="/admin/create-product" element={<CreateProduct />} />
         <Route path="/admin/edit-product/:id" element={<EditProduct />} />

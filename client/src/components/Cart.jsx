@@ -11,8 +11,9 @@ const Cart = () => {
     cartState === "orders"
       ? orders.find((cart) => String(cart.id) === String(orderId))
       : cartData.find((cart) => cart.user === user.name);
-  console.log("userCart:", userCart);
   const [cartItems, setCartItems] = useState(userCart.items);
+  const [counter, setCounter] = useState(0);
+  const [orderState, setOrderState] = useState("");
 
   const handleQuantityTotal = () => {
     const items = cartItems;
@@ -104,12 +105,12 @@ const Cart = () => {
     setCartItems([]);
   };
 
-  const handleOrderCreation = () => {
-    const newOrder = {
+  const handleOrderCreation = (paymentMethod) => {
+    let newOrder = {
       id: Date.now(),
       customer: user.name,
       items: cartItems,
-      paymentMethod: "paid",
+      paymentMethod: paymentMethod,
       createdAt: Date.now(),
       extraMinutes: 0,
       isReady: false,
@@ -120,11 +121,17 @@ const Cart = () => {
     setOrders(newOrdersCart);
   };
 
+  console.log("counter: ", counter);
+
   return (
-    <div className="pt-24 px-10">
+    <div className="pt-24 px-5 md:px-8">
       <p className="text-blue-700 mb-5 text-sm px-auto w-full flex items-center justify-between md:w-full px-auto">
         <span className="">
-          {cartState === "orders" ? "My Orders" : "My Cart"}
+          {cartState === "orders"
+            ? user.role === "admin"
+              ? userCart.customer
+              : "My Orders"
+            : "My Cart"}
         </span>
         <span className="text-[0.85rem] whitespace-nowrap">
           {userCart?.user}
@@ -161,7 +168,7 @@ const Cart = () => {
             return (
               <div
                 key={item.pizzaId}
-                className="border border-gray-300 shadow-md hover:shadow-red-400 w-fit p-3 rounded-lg flex items-center justify-between flex-col gap-2"
+                className="border border-gray-300 shadow-md hover:shadow-red-400 w-full p-3 rounded-lg flex items-center justify-between flex-col gap-2"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div>
@@ -186,17 +193,20 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 w-full justify-around">
+                <div className="flex w-full items-center flex-col  gap-3">
                   {item.sizes.map((size, index) => {
                     let total = size.price * size.quantity;
                     return (
                       <div
                         key={index}
-                        className="flex items-start flex-col gap-1 bg-gray-200 p-3 rounded-lg text-[0.70rem]"
+                        className="flex items-start justify-between flex-row w-full gap-1 bg-gray-200 p-3 rounded-lg text-xs"
                       >
-                        <span>Size: {size.size}</span>
+                        <span className="whitespace-nowrap font-bold">
+                          Size: {size.size}
+                        </span>
+                        {"--"}
                         {productId === item.pizzaId ? (
-                          <div className="flex items-center gap-1 whitespace-nowrap w-19 text-[0.70rem]">
+                          <div className="flex items-center gap-1 whitespace-nowrap w-19 text-xs">
                             <span>Quantity: </span>
                             <input
                               type="number"
@@ -213,11 +223,11 @@ const Cart = () => {
                             />
                           </div>
                         ) : (
-                          <span className="whitespace-nowrap">
+                          <span className="whitespace-nowrap font-bold">
                             Quantity: {size.quantity}
                           </span>
-                        )}
-
+                        )}{" "}
+                        {"--"}
                         <span className="whitespace-nowrap font-bold">
                           Total: R{total.toFixed(2)}
                         </span>
@@ -265,18 +275,75 @@ const Cart = () => {
           <></>
         ) : (
           <div>
-            <button
-              onClick={() => {
-                alert(
-                  "Order successfully placed! View your order so that you can also track it!",
-                );
-                handleOrderCreation();
-                handleClearCart();
-              }}
-              className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3"
-            >
-              Order
-            </button>
+            <div className="bg-blue-100 text-black text-sm mt-3 mb-1 text-center whitespace-nowrap w-full py-1">
+              Place your order below!
+            </div>
+            <div className="flex items-center justify-between w-full gap-2">
+              <button
+                onClick={() => {
+                  if (cartItems.length === 0) {
+                    alert("Add a pizza in your cart first.");
+                    return;
+                  }
+
+                  if (counter > 0 && orderState === "online Payment") {
+                    alert(
+                      "Order successfully placed! View your order so that you can also track it!",
+                    );
+                    handleOrderCreation("paid");
+                    handleClearCart();
+                    setCounter(0);
+                    setOrderState("");
+                    return;
+                  }
+                  setCounter((prev) =>
+                    orderState === "online Payment" || orderState === ""
+                      ? prev + 1
+                      : 1,
+                  );
+                  setOrderState("online Payment");
+                  alert(
+                    "You selected online payment. To proceede with your online payment click the online payment button again.",
+                  );
+                }}
+                className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3"
+              >
+                Online Payment
+              </button>
+              <button
+                onClick={() => {
+                  if (cartItems.length === 0) {
+                    alert("Add a pizza in your cart first.");
+                    return;
+                  }
+                  
+                  if (counter > 0 && orderState === "Pay on Collection") {
+                    alert(
+                      "Order successfully placed! View your order so that you can also track it!",
+                    );
+                    handleOrderCreation("Pay on Collection");
+                    handleClearCart();
+                    setCounter(0);
+                    setOrderState("");
+                    return;
+                  }
+
+                  alert(
+                    "You selected pay on collection? To proceede with your order click the Pay on Collection button again.",
+                  );
+                  setCounter((prev) =>
+                    orderState === "Pay on Collection" || orderState === ""
+                      ? prev + 1
+                      : 1,
+                  );
+                  setOrderState("Pay on Collection");
+                }}
+                className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3"
+              >
+                Pay on Collection
+              </button>
+            </div>
+
             <button
               onClick={() => {
                 handleClearCart();
@@ -453,6 +520,8 @@ const Cart = () => {
               </button>
             </div>
           )}
+
+          {cartState === "orders" && user.role === "admin" && <div></div>}
         </div>
       </div>
     </div>

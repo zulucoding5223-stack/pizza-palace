@@ -115,6 +115,7 @@ const Cart = () => {
       extraMinutes: 0,
       isReady: false,
       total: cartTotalT,
+      isViewedByAdmin: false,
     };
 
     let newOrdersCart = [newOrder, ...orders];
@@ -316,7 +317,7 @@ const Cart = () => {
                     alert("Add a pizza in your cart first.");
                     return;
                   }
-                  
+
                   if (counter > 0 && orderState === "Pay on Collection") {
                     alert(
                       "Order successfully placed! View your order so that you can also track it!",

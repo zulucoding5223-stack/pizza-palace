@@ -3,7 +3,7 @@ import logo from "../assets/Pizza-Slice-in-Tango-Colors.svg";
 import { TiShoppingCart } from "react-icons/ti";
 import { IoPerson } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../utils/appContext";
 
 const Navbar = () => {
@@ -28,6 +28,14 @@ const Navbar = () => {
     setCartState,
   } = useAppContext();
 
+  const userLinks = [
+  { name: user?.name || "Profile", direction: "profile" },
+  { name: "My Cart", direction: "my-cart" },
+  { name: "My Orders", direction: "my-orders" },
+  { name: "Logout", direction: "logout" },
+];
+
+  const [isLogout, setIsLogout] = useState(false);
   useEffect(() => {
     const userCart = cartData?.find((cart) => cart.user === user?.name);
     setCart(userCart);
@@ -124,9 +132,10 @@ const Navbar = () => {
                   }}
                   className="hover:cursor-pointer relative rounded-full w-8.5 h-8.5 text-center bg-gray-300 text-blue-950 lg:block overflow-hidden"
                 >
-                  <IoPerson
-                    size={"1.9rem"}
-                    className="absolute top-1.5 right-[2.3px]"
+                  <img
+                    className="object-center w-full"
+                    src={user.image}
+                    alt="profile-image"
                   />
                 </button>
 
@@ -209,44 +218,34 @@ const Navbar = () => {
         </ul>
 
         {user && isProfileMenuOpen && (
-          <ul className="absolute lg:top-15.5 top-16 lg:right-4.5 md:right-21 right-5 text-[0.85rem] z-5 w-fit bg-gray-50">
-            <li className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer">
-              {user.name}
-            </li>
-            <li
-              onClick={() => {
-                navigate("/my-cart");
-                setIsProfileMenuOpen(false);
-                setIsOpen(false);
-                setCartState("")
-              }}
-              className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer"
-            >
-              My Cart
-            </li>
-            <li
-              onClick={() => {
-                navigate("/my-orders");
-                setIsProfileMenuOpen(false);
-                setIsOpen(false);
-                setCartState("orders")
-              }}
-              className="text-center pt-1 pb-1.5 px-20 w-full hover:bg-blue-950 hover:text-red-500 mb-1 transition-all duration-300 hover:cursor-pointer"
-            >
-              My Orders
-            </li>
-            <li
-              onClick={() => {
-                logout();
-                setIsOpen(false);
-                setIsProfileMenuOpen(false);
-                navigate("/");
-              }}
-              className="text-center pt-1 pb-1.5 px-20 w-full text-blue-950 bg-red-500 hover:text-white hover:bg-gray-700 transition-all duration-300 hover:cursor-pointer"
-            >
-              Logout
-            </li>
-          </ul>
+          <div className="z-50 absolute top-15.25 right-6.5 lg:w-48 bg-gray-200 flex items-center flex-col text-sm">
+            {userLinks.map((link, index) => {
+              const linkName = link.name;
+              return (
+                <div
+                  key={index}
+                  className={`py-1 w-48 text-center ${linkName === "Logout" ? "bg-orange-500 text-blue-950 text-center" : ""} `}
+                >
+                  <NavLink
+                    onClick={() => {
+                      setIsOpen(false);
+                      setIsProfileMenuOpen(false);
+                      if (linkName === "Logout") {
+                        logout();
+                        return;
+                      }
+                    }}
+                    to={`${link.direction}`}
+                    className={({ isActive }) =>
+                      `block w-full  ${isActive ? "bg-blue-950 text-white" : ""} `
+                    }
+                  >
+                    {linkName}
+                  </NavLink>
+                </div>
+              );
+            })}
+          </div>
         )}
       </section>
     </div>

@@ -18,6 +18,8 @@ import ProductPage from "./pages/ProductPage";
 import CreateProduct from "./pages/CreateProduct";
 import EditProduct from "./pages/EditProduct";
 import UserOrders from "./pages/userOrders";
+import Footer from "./components/Footer";
+import MyProfile from "./pages/MyProfile";
 
 const App = () => {
   const { user } = useAppContext();
@@ -39,7 +41,9 @@ const App = () => {
         <Route path="/menu/:id" element={<ProductPage />} />
         <Route path="/admin/create-product" element={<CreateProduct />} />
         <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+        <Route path="/profile" element={<MyProfile />} />
       </Routes>
+      <Footer/>
     </div>
   );
 };

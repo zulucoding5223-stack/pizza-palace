@@ -48,6 +48,8 @@ const MyOrders = () => {
   const getStatus = (order) => {
     if (order.isReady) return "Ready";
 
+    if (!order.isViewedByAdmin) return "Received";
+
     const passed = getMinutesPassed(order.createdAt);
     const totalTime = getBaseTime(order.items.length) + order.extraMinutes;
 

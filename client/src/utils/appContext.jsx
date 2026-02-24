@@ -11,6 +11,8 @@ const dummyUsers = [
     email: "admin@pizza.com",
     password: "admin123",
     role: "admin",
+    image:
+      "https://ui-avatars.com/api/?name=Admin+User&background=111827&color=ffffff&size=200",
   },
   {
     id: 2,
@@ -18,6 +20,8 @@ const dummyUsers = [
     email: "user@pizza.com",
     password: "user123",
     role: "user",
+    image:
+      "https://ui-avatars.com/api/?name=John+Doe&background=111827&color=ffffff&size=200",
   },
 ];
 
@@ -137,6 +141,7 @@ const userCart = [
         flavour: "chicken and mushroom",
         category: "single",
         image: single,
+        isViewedByAdmin: false,
         sizes: [
           { size: "S", price: 60, quantity: 1 },
           { size: "M", price: 80, quantity: 1 },
@@ -318,6 +323,7 @@ export const AppContextProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         user,
+        setUser,
         login,
         logout,
         isOpen,

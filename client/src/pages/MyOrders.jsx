@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 const MyOrders = () => {
   const { orders, user, setCartState } = useAppContext();
   const navigate = useNavigate();
-
   // Filter orders based on user role
   const userOrders = user
     ? user?.role === "admin"
@@ -136,8 +135,11 @@ const MyOrders = () => {
                   </span>
                 </td>
 
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 relative">
                   <p className="text-xs">{order.items.length} item(s)</p>
+                  {!order.isCollected && order.isReady && (
+                    <div className="w-3 h-3 rounded-full bg-green-600 top-6.5 right-1 absolute"></div>
+                  )}
                 </td>
               </tr>
             ))}
@@ -161,7 +163,8 @@ const MyOrders = () => {
               <div className="flex flex-row items-start gap-2">
                 <span className="text-xs text-gray-500">
                   {getStatus(order)}
-                </span> <span className="-mt-1.5">-</span>
+                </span>{" "}
+                <span className="-mt-1.5">-</span>
                 <span className="text-xs text-gray-500">
                   {order.isCollected ? "Collected" : "Not Collected"}
                 </span>

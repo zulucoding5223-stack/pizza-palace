@@ -42,8 +42,9 @@ const App = () => {
         <Route path="/admin/create-product" element={<CreateProduct />} />
         <Route path="/admin/edit-product/:id" element={<EditProduct />} />
         <Route path="/profile" element={<MyProfile />} />
+        <Route path="/admin/profile" element={<MyProfile />} />
       </Routes>
-      <Footer/>
+      {user && user.role === "user" ? <Footer /> : <></>}
     </div>
   );
 };

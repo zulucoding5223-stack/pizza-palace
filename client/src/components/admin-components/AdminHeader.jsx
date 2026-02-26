@@ -3,11 +3,11 @@ import logo from "../../assets/Pizza-Slice-in-Tango-Colors.svg";
 import profile from "../../assets/pictures-of-pizza-23-1.jpg";
 import { useAppContext } from "../../utils/appContext";
 const AdminHeader = () => {
-  const { isOpen, setIsOpen, user } = useAppContext();
+  const { user } = useAppContext();
 
   return (
     <div>
-      <section className="pl-21 h-fit py-2 md:pl-81 bg-blue-950 w-full pr-3 shadow-sm shadow-blue-950 fixed">
+      <section className="pl-21 h-fit py-2 md:pl-81 bg-blue-950 w-full pr-3 shadow-sm shadow-blue-950 fixed z-50">
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
           <img
@@ -19,7 +19,7 @@ const AdminHeader = () => {
         </div>
         <div className="flex items-center gap-2">
           <img
-            src={profile}
+            src={user.image}
             alt="profile-image"
             className="w-10 h-9 rounded-full object-center"
           />

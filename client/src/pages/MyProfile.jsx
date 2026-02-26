@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAppContext } from "../utils/appContext";
 import { useNavigate } from "react-router-dom";
+import AdminHeader from "../components/admin-components/AdminHeader";
 
 const MyProfile = () => {
   const { user, setUser } = useAppContext();
@@ -44,13 +45,15 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div
+      className={`min-h-screen bg-gray-100 ${user.role === "admin" && "pl-20 sm:pl-80 lg:pl-75"}`}
+    >
       {/* Top Header Section */}
-      <div className="bg-blue-950 h-48 w-full"></div>
+      <div className="bg-blue-950 h-48 w-full z-0"></div>
 
       {/* Profile Card */}
       {user ? (
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6 sm:pt-45 lg:pt-0">
           <div className="bg-white shadow-xl rounded-2xl -mt-24 p-10 relative">
             {/* Profile Image */}
             <div className="flex flex-col items-center">
@@ -105,20 +108,24 @@ const MyProfile = () => {
               <div className="grid sm:grid-cols-2 gap-4">
                 <button
                   onClick={() => {
-                    navigate("/my-cart");
+                    user.role === "user"
+                      ? navigate("/my-cart")
+                      : navigate("/admin/dashboard");
                   }}
                   className="w-full bg-blue-950 text-white py-3 rounded-lg font-semibold hover:bg-blue-900 transition"
                 >
-                  Go to Cart
+                  {user.role === "user" ? "Go to Cart" : "View Dashbaord"}
                 </button>
 
                 <button
                   onClick={() => {
-                    navigate("/my-orders");
+                    user.role === "user"
+                      ? navigate("/my-orders")
+                      : navigate("/admin/orders");
                   }}
                   className="w-full border-2 border-blue-950 text-blue-950 py-3 rounded-lg font-semibold hover:bg-blue-950 hover:text-white transition"
                 >
-                  Track Orders
+                  {user.role === "user" ? "Track Orders" : "View Orders"}
                 </button>
 
                 <button

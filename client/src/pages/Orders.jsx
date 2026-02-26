@@ -10,6 +10,7 @@ const Orders = () => {
   const [minutesInput, setMinutesInput] = useState({});
   const [searchResult, setSearchResult] = useState("");
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -118,6 +119,23 @@ const Orders = () => {
       alert("Order is either not paid out or not ready!");
     }
   };
+  useEffect(() => {
+    const userOrders = filteredOrders?.filter(
+      (order) => order?.customer === user?.name,
+    );
+
+    let ready = false;
+
+    for (let i = 0; i < userOrders?.length; i++) {
+      const currentOrder = userOrders[i];
+
+      if (currentOrder.isCollected === false && currentOrder.isReady === true) {
+        ready = true;
+      }
+    }
+
+    setIsReady(ready);
+  }, [orders]);
 
   return (
     <div>
@@ -156,11 +174,14 @@ const Orders = () => {
                 <tbody>
                   {filteredOrders.map((order) => (
                     <tr key={order.id} className="border-t">
-                      <td className="px-4 py-3 font-semibold">
+                      <td className="px-4 py-3 font-semibold relative">
                         {order.id}
                         <p className="text-xs text-gray-500">
                           {new Date(order.createdAt).toLocaleString()}
                         </p>
+                        {order.isViewedByAdmin === false && (
+                          <div className="bg-red-500 w-3 h-3 rounded-full top-5 right-3 lg:right-5 absolute"></div>
+                        )}
                       </td>
 
                       <td className="px-4 py-3">{order.customer}</td>
@@ -266,9 +287,15 @@ const Orders = () => {
         {filteredOrders && filteredOrders.length > 0 ? (
           <div className="md:hidden flex flex-col gap-4">
             {filteredOrders.map((order) => (
-              <div key={order.id} className="bg-white p-4 rounded-xl shadow">
+              <div
+                key={order.id}
+                className="bg-white p-4 rounded-xl shadow relative"
+              >
                 <div className="flex justify-between items-center mb-1">
                   <h3 className="font-semibold">{order.id}</h3>
+                  {order.isViewedByAdmin === false && (
+                    <div className="bg-red-500 w-2.5 h-2.5 rounded-full top-0.5 right-1 absolute"></div>
+                  )}
                   <div className="flex flex-row items-start gap-2">
                     <span className="text-xs text-gray-500">
                       {getStatus(order)}

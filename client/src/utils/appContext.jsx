@@ -246,6 +246,7 @@ export const AppContextProvider = ({ children }) => {
       isReady: true,
       total: 800,
       isCollected: true,
+      isViewedByAdmin: true,
     },
     {
       id: "ORD-002",
@@ -281,6 +282,7 @@ export const AppContextProvider = ({ children }) => {
       isReady: false,
       total: 800,
       isCollected: false,
+      isViewedByAdmin: false,
     },
     {
       id: "ORD-003",
@@ -313,9 +315,10 @@ export const AppContextProvider = ({ children }) => {
       paymentMethod: "collection",
       createdAt: Date.now(),
       extraMinutes: 0,
-      isReady: false,
+      isReady: true,
       total: 800,
       isCollected: false,
+      isViewedByAdmin: false,
     },
   ]);
 

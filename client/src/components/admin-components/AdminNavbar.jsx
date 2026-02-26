@@ -10,6 +10,23 @@ import { IoMenu } from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
 
 const AdminNavbar = () => {
+  const { orders } = useAppContext();
+
+  const [isNotViewed, setIsNotViewed] = useState(false);
+
+  useEffect(() => {
+    let notViewed = false;
+    for (let i = 0; i < orders.length; i++) {
+      const currentOrder = orders[i];
+
+      if (currentOrder.isViewedByAdmin === false) {
+        notViewed = true;
+      }
+    }
+
+    setIsNotViewed(notViewed);
+  }, [orders]);
+
   const adminLinks = [
     { name: "Dashboard", icon: MdDashboard },
     { name: "Orders", icon: BsBorderStyle },
@@ -31,7 +48,7 @@ const AdminNavbar = () => {
     <div>
       <section>
         <div
-          className={`hidden flex-col justify-between h-screen w-80 z-20 shadow-xl bg-blue-950 fixed p-5 shadow-black md:flex`}
+          className={`hidden flex-col justify-between h-screen w-80 z-51 shadow-xl bg-blue-950 fixed p-5 shadow-black md:flex`}
         >
           <div>
             <div className="flex items-center gap-3">
@@ -60,7 +77,7 @@ const AdminNavbar = () => {
                     to={path}
                     key={index}
                     className={({ isActive }) =>
-                      `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer  ${
+                      `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer relative ${
                         isActive
                           ? "rounded-r-2xl bg-blue-700 hover:bg-blue-700"
                           : "hover:bg-blue-900"
@@ -69,6 +86,9 @@ const AdminNavbar = () => {
                   >
                     <adminLink.icon color="white" size="1.5rem" />{" "}
                     <p>{adminLink.name}</p>
+                    {adminLink.name === "Orders" && isNotViewed && (
+                      <div className="bg-red-500 w-4 h-4 rounded-full top-2.75 right-1.5 absolute"></div>
+                    )}
                   </NavLink>
                 );
               })}
@@ -81,9 +101,9 @@ const AdminNavbar = () => {
               <div className="w-full text-white flex items-center gap-4 text-xl font-bold shadow-md shadow-black rounded-full p-2 cursor-pointer">
                 <div className="w-fit rounded-full bg-white">
                   <img
-                    src={profile}
+                    src={user.image}
                     alt="profile-image"
-                    className="w-16 h-11 rounded-full object-center"
+                    className="w-14 h-10.75 rounded-full object-center"
                   />
                 </div>
                 <p className="w-full text-sm">Welcome, Admin {user.name}!</p>
@@ -93,7 +113,7 @@ const AdminNavbar = () => {
         </div>
 
         <div
-          className={`flex flex-col justify-between h-screen ${isOpen ? "w-80" : "w-20"} z-20 shadow-xl bg-blue-950 fixed p-5 shadow-black md:hidden`}
+          className={`flex flex-col justify-between h-screen ${isOpen ? "w-80" : "w-20"} z-51 shadow-xl bg-blue-950 fixed p-5 shadow-black md:hidden`}
         >
           <div>
             <div className="flex items-start pl-1.5 gap-3 flex-col">
@@ -134,7 +154,7 @@ const AdminNavbar = () => {
                           setIsOpen(false);
                         }}
                         className={({ isActive }) =>
-                          `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer  ${
+                          `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer relative ${
                             isActive
                               ? "rounded-r-2xl bg-blue-700 hover:bg-blue-700"
                               : "hover:bg-blue-900"
@@ -143,6 +163,9 @@ const AdminNavbar = () => {
                       >
                         <adminLink.icon color="white" size="1.5rem" />{" "}
                         <p>{adminLink.name}</p>
+                        {adminLink.name === "Orders" && isNotViewed && (
+                          <div className="bg-red-500 w-3 h-3 rounded-full top-3.5 right-1.5 absolute"></div>
+                        )}
                       </NavLink>
                     );
                   })}
@@ -162,7 +185,7 @@ const AdminNavbar = () => {
                         to={path}
                         key={index}
                         className={({ isActive }) =>
-                          `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer  ${
+                          `w-full text-white text-md flex items-center gap-3 p-2 hover:cursor-pointer relative ${
                             isActive
                               ? "rounded-r-2xl bg-blue-700 hover:bg-blue-700"
                               : "hover:bg-blue-900"
@@ -170,6 +193,9 @@ const AdminNavbar = () => {
                         }
                       >
                         <adminLink.icon color="white" size="1.5rem" />{" "}
+                        {adminLink.name === "Orders" && isNotViewed && (
+                          <div className="bg-red-500 w-2 h-2 rounded-full top-px left-0.5 absolute"></div>
+                        )}
                       </NavLink>
                     );
                   })}
@@ -185,9 +211,9 @@ const AdminNavbar = () => {
                 <div className="w-full text-white flex items-center gap-4 text-xl font-bold shadow-md shadow-black rounded-full p-2 cursor-pointer">
                   <div className="w-fit rounded-full bg-white">
                     <img
-                      src={profile}
+                      src={user.image}
                       alt="profile-image"
-                      className="w-16 h-11 rounded-full object-center"
+                      className="w-14 h-11 rounded-full object-center"
                     />
                   </div>
                   <p className="w-full text-sm">Welcome, Admin {user.name}!</p>
@@ -197,7 +223,7 @@ const AdminNavbar = () => {
               <div className="">
                 <div className="w-fit rounded-full bg-white">
                   <img
-                    src={profile}
+                    src={user.image}
                     alt="profile-image"
                     className="w-15 h-10 rounded-full object-center"
                   />

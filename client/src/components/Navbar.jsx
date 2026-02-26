@@ -10,6 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isClicked, setIsClicked] = useState("home");
+  const [isReady, setIsReady] = useState(false);
   const location = useLocation();
   const page =
     location.pathname.slice(1) === "" ? "/" : location.pathname.slice(1);
@@ -26,16 +27,16 @@ const Navbar = () => {
     cartQuantity,
     setCartQuantity,
     setCartState,
+    orders,
   } = useAppContext();
 
   const userLinks = [
-  { name: user?.name || "Profile", direction: "profile" },
-  { name: "My Cart", direction: "my-cart" },
-  { name: "My Orders", direction: "my-orders" },
-  { name: "Logout", direction: "logout" },
-];
+    { name: user?.name || "Profile", direction: "profile" },
+    { name: "My Cart", direction: "my-cart" },
+    { name: "My Orders", direction: "my-orders" },
+    { name: "Logout", direction: "/" },
+  ];
 
-  const [isLogout, setIsLogout] = useState(false);
   useEffect(() => {
     const userCart = cartData?.find((cart) => cart.user === user?.name);
     setCart(userCart);
@@ -60,7 +61,27 @@ const Navbar = () => {
     handleQuantityDisplay();
   }, [user, cartData]);
 
-  console.log();
+  useEffect(() => {
+    const userOrders = orders?.filter(
+      (order) => order?.customer === user?.name,
+    );
+
+    console.log("user orders", userOrders);
+
+    let ready = false;
+
+    for (let i = 0; i < userOrders?.length; i++) {
+      const currentOrder = userOrders[i];
+
+      if (currentOrder.isCollected === false && currentOrder.isReady === true) {
+        ready = true;
+      }
+    }
+
+    setIsReady(ready);
+  }, [orders, user]);
+
+  console.log(isReady);
   const navLinks = ["Home", "Menu", "Location", "Communications"];
   const navigate = useNavigate();
   return (
@@ -126,18 +147,23 @@ const Navbar = () => {
                     {cartQuantity}
                   </span>
                 </button>
-                <button
-                  onClick={() => {
-                    user && setIsProfileMenuOpen((prev) => !prev);
-                  }}
-                  className="hover:cursor-pointer relative rounded-full w-8.5 h-8.5 text-center bg-gray-300 text-blue-950 lg:block overflow-hidden"
-                >
-                  <img
-                    className="object-center w-full"
-                    src={user.image}
-                    alt="profile-image"
-                  />
-                </button>
+                <div className="relative w-fit">
+                  <button
+                    onClick={() => {
+                      user && setIsProfileMenuOpen((prev) => !prev);
+                    }}
+                    className="hover:cursor-pointer rounded-full w-8.5 h-8.5 text-center bg-gray-300 text-blue-950 lg:block overflow-hidden"
+                  >
+                    <img
+                      className="object-center w-full"
+                      src={user.image}
+                      alt="profile-image"
+                    />
+                    {isReady && (
+                      <div className="w-3 h-3 rounded-full bg-green-600 top-0 right-0 absolute"></div>
+                    )}
+                  </button>
+                </div>
 
                 {user && (
                   <p
@@ -237,10 +263,13 @@ const Navbar = () => {
                     }}
                     to={`${link.direction}`}
                     className={({ isActive }) =>
-                      `block w-full  ${isActive ? "bg-blue-950 text-white" : ""} `
+                      `block w-full relative  ${isActive ? "bg-blue-950 text-white" : ""} `
                     }
                   >
                     {linkName}
+                    {linkName === "My Orders" && isReady && (
+                      <div className="w-3 h-3 rounded-full bg-green-600 top-1.5 right-1 absolute"></div>
+                    )}
                   </NavLink>
                 </div>
               );

@@ -315,7 +315,7 @@ export const AppContextProvider = ({ children }) => {
       paymentMethod: "collection",
       createdAt: Date.now(),
       extraMinutes: 0,
-      isReady: true,
+      isReady: false,
       total: 800,
       isCollected: false,
       isViewedByAdmin: false,

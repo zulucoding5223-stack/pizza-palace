@@ -497,25 +497,84 @@ const Cart = () => {
             </span>
           </div>
 
-          {cartState !== "orders" && (
-            <div className="flex gap-3 mt-4">
+          {cartState === "orders" ? (
+            <></>
+          ) : (
+            <div>
+              <div className="bg-blue-100 text-black text-sm mt-3 mb-1 text-center whitespace-nowrap w-full py-1">
+                Place your order below!
+              </div>
+              <div className="flex items-center justify-between w-full gap-2">
+                <button
+                  onClick={() => {
+                    if (cartItems.length === 0) {
+                      alert("Add a pizza in your cart first.");
+                      return;
+                    }
+
+                    if (counter > 0 && orderState === "online Payment") {
+                      alert(
+                        "Order successfully placed! View your order so that you can also track it!",
+                      );
+                      handleOrderCreation("paid");
+                      handleClearCart();
+                      setCounter(0);
+                      setOrderState("");
+                      return;
+                    }
+                    setCounter((prev) =>
+                      orderState === "online Payment" || orderState === ""
+                        ? prev + 1
+                        : 1,
+                    );
+                    setOrderState("online Payment");
+                    alert(
+                      "You selected online payment. To proceede with your online payment click the online payment button again.",
+                    );
+                  }}
+                  className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3"
+                >
+                  Online Payment
+                </button>
+                <button
+                  onClick={() => {
+                    if (cartItems.length === 0) {
+                      alert("Add a pizza in your cart first.");
+                      return;
+                    }
+
+                    if (counter > 0 && orderState === "Pay on Collection") {
+                      alert(
+                        "Order successfully placed! View your order so that you can also track it!",
+                      );
+                      handleOrderCreation("Pay on Collection");
+                      handleClearCart();
+                      setCounter(0);
+                      setOrderState("");
+                      return;
+                    }
+
+                    alert(
+                      "You selected pay on collection? To proceede with your order click the Pay on Collection button again.",
+                    );
+                    setCounter((prev) =>
+                      orderState === "Pay on Collection" || orderState === ""
+                        ? prev + 1
+                        : 1,
+                    );
+                    setOrderState("Pay on Collection");
+                  }}
+                  className="w-full bg-green-500 text-white hover:bg-green-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3"
+                >
+                  Pay on Collection
+                </button>
+              </div>
+
               <button
                 onClick={() => {
-                  alert(
-                    "Order successfully placed! View your order so that you can also track it!",
-                  );
-                  handleOrderCreation();
                   handleClearCart();
                 }}
-                className="w-full bg-green-500 text-white hover:bg-green-700 text-sm py-2 rounded-lg"
-              >
-                Order
-              </button>
-              <button
-                onClick={() => {
-                  handleClearCart();
-                }}
-                className="w-full bg-orange-500 text-white hover:bg-orange-700 text-sm py-2 rounded-lg whitespace-nowrap"
+                className="w-full bg-orange-500 text-white hover:bg-orange-700 text-[0.85rem] pb-0.75 pt-0.5 rounded-lg mt-3 whitespace-nowrap mb-5"
               >
                 Clear Cart
               </button>

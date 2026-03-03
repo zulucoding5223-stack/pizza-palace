@@ -5,12 +5,11 @@ import { LuSearch } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 const Orders = () => {
-  const { orders, setCartState } = useAppContext();
+  const { orders, setCartState, setOrders } = useAppContext();
   const [now, setNow] = useState(Date.now());
   const [minutesInput, setMinutesInput] = useState({});
   const [searchResult, setSearchResult] = useState("");
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -119,23 +118,15 @@ const Orders = () => {
       alert("Order is either not paid out or not ready!");
     }
   };
-  useEffect(() => {
-    const userOrders = filteredOrders?.filter(
-      (order) => order?.customer === user?.name,
+
+  const handleIsViewed = (id) => {
+    const updatedOrders = filteredOrders.map((order) =>
+      order.id === id ? { ...order, isViewedByAdmin: true } : order,
     );
 
-    let ready = false;
-
-    for (let i = 0; i < userOrders?.length; i++) {
-      const currentOrder = userOrders[i];
-
-      if (currentOrder.isCollected === false && currentOrder.isReady === true) {
-        ready = true;
-      }
-    }
-
-    setIsReady(ready);
-  }, [orders]);
+    setFilteredOrders(updatedOrders);
+    setOrders(updatedOrders);
+  };
 
   return (
     <div>
@@ -255,6 +246,7 @@ const Orders = () => {
                         </div>
                         <button
                           onClick={() => {
+                            handleIsViewed(order.id);
                             navigate(`/admin/view-user-orders/${order.id}`);
                             setCartState("orders");
                           }}

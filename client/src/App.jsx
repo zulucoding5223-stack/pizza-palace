@@ -23,28 +23,33 @@ import MyProfile from "./pages/MyProfile";
 
 const App = () => {
   const { user } = useAppContext();
+
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       {user && user.role === "admin" ? <AdminNavbar /> : <Navbar />}
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/menu" element={<Menupage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/products" element={<Products />} />
-        <Route path="/admin/orders" element={<Orders />} />
-        <Route path="/my-cart" element={<MyCart />} />
-        <Route path="/my-orders" element={<MyOrders />} />
-        <Route path="/view-my-orders/:id" element={<ViewOrders />} />
-        <Route path="/admin/view-user-orders/:id" element={<UserOrders />} />
-        <Route path="/menu/:id" element={<ProductPage />} />
-        <Route path="/admin/create-product" element={<CreateProduct />} />
-        <Route path="/admin/edit-product/:id" element={<EditProduct />} />
-        <Route path="/profile" element={<MyProfile />} />
-        <Route path="/admin/profile" element={<MyProfile />} />
-      </Routes>
-      {user && user.role === "user" ? <Footer /> : <></>}
+
+      <main className="grow">
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/menu" element={<Menupage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/products" element={<Products />} />
+          <Route path="/admin/orders" element={<Orders />} />
+          <Route path="/my-cart" element={<MyCart />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/view-my-orders/:id" element={<ViewOrders />} />
+          <Route path="/admin/view-user-orders/:id" element={<UserOrders />} />
+          <Route path="/menu/:id" element={<ProductPage />} />
+          <Route path="/admin/create-product" element={<CreateProduct />} />
+          <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+          <Route path="/profile" element={<MyProfile />} />
+          <Route path="/admin/profile" element={<MyProfile />} />
+        </Routes>
+      </main>
+
+      {!user || user.role === "user" ? <Footer /> : null}
     </div>
   );
 };

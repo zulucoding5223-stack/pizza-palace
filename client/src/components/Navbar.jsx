@@ -14,7 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   const page =
     location.pathname.slice(1) === "" ? "/" : location.pathname.slice(1);
-
+  console.log(page);
   useEffect(() => {
     setIsClicked(page);
   }, [location]);
@@ -256,12 +256,8 @@ const Navbar = () => {
                     onClick={() => {
                       setIsOpen(false);
                       setIsProfileMenuOpen(false);
-                      if (linkName === "Logout") {
-                        logout();
-                        return;
-                      }
                     }}
-                    to={`${link.direction}`}
+                    to={`${linkName === "Logout" ? "/rate-us" : link.direction}`}
                     className={({ isActive }) =>
                       `block w-full relative  ${isActive ? "bg-blue-950 text-white" : ""} `
                     }

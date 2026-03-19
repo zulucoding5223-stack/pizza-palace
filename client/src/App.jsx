@@ -20,6 +20,7 @@ import EditProduct from "./pages/EditProduct";
 import UserOrders from "./pages/userOrders";
 import Footer from "./components/Footer";
 import MyProfile from "./pages/MyProfile";
+import RateUs from "./pages/RateUs";
 
 const App = () => {
   const { user } = useAppContext();
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/admin/edit-product/:id" element={<EditProduct />} />
           <Route path="/profile" element={<MyProfile />} />
           <Route path="/admin/profile" element={<MyProfile />} />
+          <Route path="/rate-us" element={<RateUs />} />
         </Routes>
       </main>
 

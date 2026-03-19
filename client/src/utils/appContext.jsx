@@ -322,6 +322,36 @@ export const AppContextProvider = ({ children }) => {
     },
   ]);
 
+  const [testimonials, setTestimonials] = useState([
+    {
+      user: {
+        name: "Linda",
+        image:
+          "https://ui-avatars.com/api/?name=Linda&background=111827&color=ffffff&size=200",
+      },
+      ratings: 4,
+      review: "Professional service and amazing flavors.",
+    },
+    {
+      user: {
+        name: "James",
+        image:
+          "https://ui-avatars.com/api/?name=James&background=111827&color=ffffff&size=200",
+      },
+      ratings: 5,
+      review: "Best pizza I’ve ever had. Highly recommended.",
+    },
+    {
+      user: {
+        name: "Sarah",
+        image:
+          "https://ui-avatars.com/api/?name=Sarah&background=111827&color=ffffff&size=200",
+      },
+      ratings: 5,
+      review: "Absolutely delicious and delivered on time!",
+    },
+  ]);
+
   return (
     <AppContext.Provider
       value={{
@@ -342,6 +372,8 @@ export const AppContextProvider = ({ children }) => {
         setCartQuantity,
         cartState,
         setCartState,
+        testimonials,
+        setTestimonials,
       }}
     >
       {children}
